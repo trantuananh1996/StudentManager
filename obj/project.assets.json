@@ -13488,11 +13488,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Tran Anh\\Desktop\\exam-master\\exam-master\\StudentManager.csproj",
+      "projectUniqueName": "C:\\Users\\Tran Anh\\Documents\\GitHub\\StudentManager\\StudentManager.csproj",
       "projectName": "StudentManager",
-      "projectPath": "C:\\Users\\Tran Anh\\Desktop\\exam-master\\exam-master\\StudentManager.csproj",
+      "projectPath": "C:\\Users\\Tran Anh\\Documents\\GitHub\\StudentManager\\StudentManager.csproj",
       "packagesPath": "C:\\Users\\Tran Anh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Tran Anh\\Desktop\\exam-master\\exam-master\\obj\\",
+      "outputPath": "C:\\Users\\Tran Anh\\Documents\\GitHub\\StudentManager\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
