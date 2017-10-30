@@ -1,0 +1,11 @@
+C:\Users\Tran Anh\Desktop\exam-master\exam-master\bin\Debug\netcoreapp2.0\exam.deps.json
+C:\Users\Tran Anh\Desktop\exam-master\exam-master\bin\Debug\netcoreapp2.0\exam.runtimeconfig.json
+C:\Users\Tran Anh\Desktop\exam-master\exam-master\bin\Debug\netcoreapp2.0\exam.runtimeconfig.dev.json
+C:\Users\Tran Anh\Desktop\exam-master\exam-master\bin\Debug\netcoreapp2.0\exam.dll
+C:\Users\Tran Anh\Desktop\exam-master\exam-master\bin\Debug\netcoreapp2.0\exam.pdb
+C:\Users\Tran Anh\Desktop\exam-master\exam-master\obj\Debug\netcoreapp2.0\exam.csprojResolveAssemblyReference.cache
+C:\Users\Tran Anh\Desktop\exam-master\exam-master\obj\Debug\netcoreapp2.0\exam.csproj.CoreCompileInputs.cache
+C:\Users\Tran Anh\Desktop\exam-master\exam-master\obj\Debug\netcoreapp2.0\exam.AssemblyInfoInputs.cache
+C:\Users\Tran Anh\Desktop\exam-master\exam-master\obj\Debug\netcoreapp2.0\exam.AssemblyInfo.cs
+C:\Users\Tran Anh\Desktop\exam-master\exam-master\obj\Debug\netcoreapp2.0\exam.dll
+C:\Users\Tran Anh\Desktop\exam-master\exam-master\obj\Debug\netcoreapp2.0\exam.pdb
