@@ -9,5 +9,6 @@ namespace StudentManager.Repository
 {
     public interface IRuleRepository:IBaseRepository<Rule>
     {
+        Task<Models.Rule> GetDefaultRule();
     }
 }
