@@ -24,6 +24,15 @@ namespace exam.Controllers
             religionRepository = rel;
         }
 
+        [HttpGet("find")]
+        public async Task<ActionResult> FindStudentByName(string name)
+        {
+            List<Student> students= await studentRepository.FindStudentByName(name);
+            if (students == null || students.Count() == 0)
+                return Ok(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy học sinh" });
+            else return Ok(new { status = ResultStatus.STATUS_OK, data = students });
+        }
+
         [HttpPost("list")]
         public async Task<IActionResult> List([FromBody] PostClassId Class)
         {

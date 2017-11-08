@@ -12,6 +12,15 @@ namespace exam.Repository
         public StudentRepository(ApplicationDbContext context) : base(context)
         {
         }
+        public async Task<List<Student>> FindStudentByName(string name)
+        {
+            var students = await _context.students.Where(s => s.FullName.Contains(name))
+                .Include("Nation")
+                .Include("Religion")
+                .ToListAsync();
+
+            return students;
+        }
 
         public async Task<List<Student>> FindStudentByClass(int classId)
         {

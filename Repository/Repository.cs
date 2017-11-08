@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using exam.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace exam.Repository
 {
@@ -45,14 +46,34 @@ namespace exam.Repository
         {
             return await _context.Set<TEntity>().ToListAsync();
         }
+        public static object ToType<T>(object obj, T type)
+        {
+            //create instance of T type object:
+            object tmp = Activator.CreateInstance(Type.GetType(type.ToString()));
 
+            //loop through the properties of the object you want to covert:          
+            foreach (PropertyInfo pi in obj.GetType().GetProperties())
+            {
+                try
+                {
+                    //get the value of property and try to assign it to the property of T type object:
+                    tmp.GetType().GetProperty(pi.Name).SetValue(tmp, pi.GetValue(obj, null), null);
+                }
+                catch (Exception ex)
+                {
+                    //  Logging.Log.Error(ex);
+                }
+            }
+            //return the T type object:         
+            return tmp;
+        }
         public async Task Update(int id, TEntity o)
         {
-            var itemToUpdate = await _context.Set<TEntity>().FindAsync(1);
-            if (itemToUpdate != null)
-            {
-                itemToUpdate = o;
-                await _context.SaveChangesAsync();
+            var itemToUpdate = await _context.Set<TEntity>().FindAsync(id);
+             if (itemToUpdate != null)
+             {
+                 itemToUpdate = o;
+                 await _context.SaveChangesAsync();
             }            
         }
 

@@ -22,7 +22,7 @@ namespace exam.Controllers
         private IUserRepository _iUserRepository;
         private IRoleRepository roleRepository;
         private string secrectKey = "needtogetthisfromenvironment";
-
+        private int expiredMinute = 20;
         public AuthController(IUserRepository iUserRepository,IRoleRepository role)
         {
             _iUserRepository = iUserRepository;
@@ -43,7 +43,8 @@ namespace exam.Controllers
         {
             if (String.IsNullOrEmpty(newU.Name)) return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Thiếu họ tên người dùng" });
             if (String.IsNullOrEmpty(newU.Username) || String.IsNullOrEmpty(newU.Password)) return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Thiếu tên đăng nhập hoặc mật khẩu" });
-
+            if (String.IsNullOrEmpty(newU.Password) || String.IsNullOrEmpty(newU.Password)) return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Mật khẩu không được để trống" });
+            if (newU.Password.Length<6) return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Mật khẩu không được ngắn hơn 6 kí tự" });
 
             if (!newU.Password.Equals(newU.Password_confirm))
             {
@@ -81,7 +82,7 @@ namespace exam.Controllers
         }
 
         [HttpPost]
-        [Route("login")]
+        [Route("sign-in")]
         public async Task<IActionResult> SignIn([FromBody] LoginModel loginModel)
         {
             var user = await _iUserRepository.FindByUsername(loginModel.Username);
@@ -94,33 +95,41 @@ namespace exam.Controllers
                 return Ok(new { status = ResultStatus.STATUS_FOBIDDEN, message = "Tài khoản bị khóa" });
             }
             var token = genToken(user);
-            return Ok(new { status = ResultStatus.STATUS_OK,data=new { token = genToken(user) } });
+            return Ok(new { status = ResultStatus.STATUS_OK,data=new { token = genToken(user),user=user } });
         }
 
-        private string genToken(User u)
+        public string genToken(User u)
         {
+            var symmetricKey = Convert.FromBase64String(secrectKey);
+            var tokenHandler = new JwtSecurityTokenHandler();
 
-            var key = new SymmetricSecurityKey(Encoding.Default.GetBytes(this.secrectKey));
-            var claims = new Claim[]{
-                new Claim(JwtRegisteredClaimNames.NameId, u.email),
+            var now = DateTime.UtcNow;
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                        {
+                        new Claim(JwtRegisteredClaimNames.NameId, u.email),
                 new Claim(JwtRegisteredClaimNames.Jti,u.email),
 
                 new Claim(ClaimTypes.Role,u.Role+""),
                 new Claim(JwtRegisteredClaimNames.Exp, $"{new DateTimeOffset(DateTime.Now.AddDays(1)).ToUnixTimeSeconds()}"),
                 new Claim(JwtRegisteredClaimNames.Nbf, $"{new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds()}")
+
+                    }),
+
+                Expires = now.AddMinutes(Convert.ToInt32(expiredMinute)),
+
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature)
             };
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
-            );
-            var tokenStr = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return tokenStr;
+            var stoken = tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.WriteToken(stoken);
+
+            return token;
         }
-
         [Authorize]
         [HttpGet]
+        [Route("info")]
         public IActionResult UserInfo()
         {
             var dict = new Dictionary<string, string>();

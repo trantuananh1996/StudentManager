@@ -16,6 +16,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
+using StudentManager.Repository.Point;
+using StudentManager.Repository;
+
 namespace exam
 {
     public class Startup
@@ -71,6 +74,10 @@ namespace exam
             services.AddScoped<IClassRepository, ClassRepository>();
             services.AddScoped<IStudentClassRepository, StudentClassRepository>();
             services.AddScoped<IGradeRepository, GradeRepository>();
+            services.AddScoped<IPointTypeRepository, PointTypeRepository>();
+            services.AddScoped<IPointRepository, PointRepository>();
+            services.AddScoped<IRuleRepository, RuleRepository>();
+
 
             services.AddMvc();
         }

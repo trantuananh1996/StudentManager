@@ -9,5 +9,6 @@ namespace exam.Repository
     public interface IStudentRepository : IBaseRepository<Student>
     {
         Task<List<Student>> FindStudentByClass(int classId);
+        Task<List<Student>> FindStudentByName(string name);
     }
 }

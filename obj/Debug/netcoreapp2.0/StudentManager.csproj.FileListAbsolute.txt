@@ -1,0 +1,11 @@
+C:\Users\Tran Anh\Documents\GitHub\StudentManager\bin\Debug\netcoreapp2.0\StudentManager.deps.json
+C:\Users\Tran Anh\Documents\GitHub\StudentManager\bin\Debug\netcoreapp2.0\StudentManager.runtimeconfig.json
+C:\Users\Tran Anh\Documents\GitHub\StudentManager\bin\Debug\netcoreapp2.0\StudentManager.runtimeconfig.dev.json
+C:\Users\Tran Anh\Documents\GitHub\StudentManager\bin\Debug\netcoreapp2.0\StudentManager.dll
+C:\Users\Tran Anh\Documents\GitHub\StudentManager\bin\Debug\netcoreapp2.0\StudentManager.pdb
+C:\Users\Tran Anh\Documents\GitHub\StudentManager\obj\Debug\netcoreapp2.0\StudentManager.csprojResolveAssemblyReference.cache
+C:\Users\Tran Anh\Documents\GitHub\StudentManager\obj\Debug\netcoreapp2.0\StudentManager.csproj.CoreCompileInputs.cache
+C:\Users\Tran Anh\Documents\GitHub\StudentManager\obj\Debug\netcoreapp2.0\StudentManager.AssemblyInfoInputs.cache
+C:\Users\Tran Anh\Documents\GitHub\StudentManager\obj\Debug\netcoreapp2.0\StudentManager.AssemblyInfo.cs
+C:\Users\Tran Anh\Documents\GitHub\StudentManager\obj\Debug\netcoreapp2.0\StudentManager.dll
+C:\Users\Tran Anh\Documents\GitHub\StudentManager\obj\Debug\netcoreapp2.0\StudentManager.pdb

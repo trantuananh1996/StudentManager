@@ -16,20 +16,20 @@ namespace exam.Repository
 
         public async Task<User> FindByEmail(string email)
         {
-            var user = await _context.users.Where(u => u.email == email).FirstOrDefaultAsync();
+            var user = await _context.users.Where(u => u.email == email).Include("Role").FirstOrDefaultAsync();
             return user;
         }
 
         public async Task<User> FindByUsername(string username)
         {
-            return await _context.users.Where(u => u.username == username).FirstOrDefaultAsync();
+            return await _context.users.Where(u => u.username == username).Include("Role").FirstOrDefaultAsync();
         }
 
         public async Task<List<User>> Search(string keyword)
         {
             var users = await _context.users.Where(u => u.username.Contains(keyword) ||
                                              u.email.Contains(keyword))
-                                .ToListAsync();
+                               .Include("Role").ToListAsync();
             return users;
         }
         public new async Task<List<User>> getAll()

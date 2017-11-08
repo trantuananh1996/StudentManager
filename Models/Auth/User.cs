@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,6 +16,7 @@ namespace exam.Models
         [Column(TypeName = "TEXT")]
         [MaxLength(100)]
         public string username { get; set; }
+        [JsonIgnore]
         public string password { get; set; }
         public virtual Role Role { get; set; } 
         public int IsLocked { get; set; }
