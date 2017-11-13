@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace exam.Repository
 {
-    public class ReligionRepository : Repository<Religion>, IReligionRepository
+    public class ReligionRepository : Repository<Religion>
     {
         public ReligionRepository(ApplicationDbContext context) : base(context)
         {

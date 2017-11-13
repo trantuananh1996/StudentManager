@@ -77,6 +77,7 @@ namespace exam
             services.AddScoped<PointRepository, PointRepository>();
             services.AddScoped<RuleRepository, RuleRepository>();
             services.AddScoped<NationRepository, NationRepository>();
+            services.AddScoped<SchoolYearRepository, SchoolYearRepository>();
 
 
 

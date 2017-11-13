@@ -7,7 +7,7 @@ using exam.Models;
 
 namespace StudentManager.Repository.Point
 {
-    public class PointRepository : Repository<Models.Point.Point>, IPointRepository
+    public class PointRepository : Repository<Models.Point.Point>
     {
         public PointRepository(ApplicationDbContext context) : base(context)
         {

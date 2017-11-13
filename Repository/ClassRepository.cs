@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace exam.Repository
 {
-    public class ClassRepository : Repository<Class>, IClassRepository
+    public class ClassRepository : Repository<Class>
     {
         public ClassRepository(ApplicationDbContext context) : base(context)
         {

@@ -12,18 +12,18 @@ namespace exam.Models
         {
         }
    
-        public DbSet<User> users { get; set; }
-        public DbSet<Role> roles { get; set; }
-        public DbSet<Student> students { get; set; }
-        public DbSet<StudentClass> studentClasses { get; set; }
-        public DbSet<Class> classes { get; set; }
-        public DbSet<Grade> grades { get; set; }
-        public DbSet<Rule> rules { get; set; }
-        public DbSet<Point> points { get; set; }
-        public DbSet<PointType> pointTypes { get; set; }
-        public DbSet<Semester> semesters { get; set; }
-
-        public DbSet<Nation> nations { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<StudentClass> StudentClasses { get; set; }
+        public DbSet<Class> Classes { get; set; }
+        public DbSet<Grade> Grades { get; set; }
+        public DbSet<Rule> Rules { get; set; }
+        public DbSet<Point> Points { get; set; }
+        public DbSet<PointType> PointTypes { get; set; }
+        public DbSet<Semester> Semesters { get; set; }
+        public DbSet<SchoolYear> SchoolYears { get; set; }
+        public DbSet<Nation> Nations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

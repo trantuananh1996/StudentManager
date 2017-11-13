@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace exam.Repository
 {
-    public class RoleRepository : Repository<Role>,IRoleRepository
+    public class RoleRepository : Repository<Role>
     {
         public RoleRepository(ApplicationDbContext context) : base(context)
         {
@@ -15,7 +15,7 @@ namespace exam.Repository
 
         public async Task<Role> FindRoleById(int id)
         {
-            var role = await _context.roles.Where(r => r.Id == id).FirstOrDefaultAsync();
+            var role = await _context.Roles.Where(r => r.Id == id).FirstOrDefaultAsync();
             return role;
         }
     }

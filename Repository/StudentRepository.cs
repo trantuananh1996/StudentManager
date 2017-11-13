@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace exam.Repository
 {
-    public class StudentRepository : Repository<Student>,IStudentRepository
+    public class StudentRepository : Repository<Student>
     {
         public StudentRepository(ApplicationDbContext context) : base(context)
         {
         }
         public async Task<List<Student>> FindStudentByName(string name)
         {
-            var students = await _context.students.Where(s => s.FullName.Contains(name))
+            var students = await _context.Students.Where(s => s.FullName.Contains(name))
                 .Include("Nation")
                 //.Include("Religion")
                 .ToListAsync();
@@ -24,12 +24,12 @@ namespace exam.Repository
 
         public async Task<List<Student>> FindStudentByClass(int classId)
         {
-            var users = await _context.studentClasses.Where(u => u.ClassId==classId)
+            var users = await _context.StudentClasses.Where(u => u.ClassId==classId)
                             .ToListAsync();
             var students = new List<Student>();
             foreach (var cls in users)
             {
-                var s = await _context.students.FindAsync(cls.StudentId);
+                var s = await _context.Students.FindAsync(cls.StudentId);
                 if (s!=null)
                     students.Add(s);
             }
