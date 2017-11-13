@@ -16,7 +16,7 @@ namespace exam.Repository
         {
             var students = await _context.students.Where(s => s.FullName.Contains(name))
                 .Include("Nation")
-                .Include("Religion")
+                //.Include("Religion")
                 .ToListAsync();
 
             return students;

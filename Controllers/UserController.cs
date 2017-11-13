@@ -9,8 +9,8 @@ namespace exam.Controllers
     [Route("api/users")]
     public class UserController : Controller
     {
-        private readonly IUserRepository _user;
-        public UserController(IUserRepository user)
+        private readonly UserRepository _user;
+        public UserController(UserRepository user)
         {
             _user = user;
         }

@@ -14,8 +14,8 @@ namespace exam.Models
         public virtual Nation Nation { get; set; }
         public virtual Religion Religion { get; set; }
         public string FatherName { get; set; }
-      //  public int FatherJobId { get; set; }
-        //public virtual Job FatherJob { get; set; }
+       // public int FatherJobId { get; set; }
+       // public virtual Job FatherJob { get; set; }
         public string MotherName { get; set; }
        // public virtual Job MotherJob { get; set; }
     }

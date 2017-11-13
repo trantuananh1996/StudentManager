@@ -14,10 +14,10 @@ namespace exam.Controllers
     [Route("api/students")]
     public class StudentController : Controller
     {
-        IStudentRepository studentRepository;
-        INationRepository nationRepository;
-        IReligionRepository religionRepository;
-        public StudentController(IStudentRepository user,INationRepository nat,IReligionRepository rel)
+        StudentRepository studentRepository;
+        NationRepository nationRepository;
+        ReligionRepository religionRepository;
+        public StudentController(StudentRepository user, NationRepository nat,ReligionRepository rel)
         {
             studentRepository = user;
             nationRepository = nat;

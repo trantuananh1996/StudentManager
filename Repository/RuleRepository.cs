@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace StudentManager.Repository
 {
-    public class RuleRepository : Repository<Rule>, IRuleRepository
+    public class RuleRepository : Repository<Rule>
     {
         public RuleRepository(ApplicationDbContext context) : base(context)
         {

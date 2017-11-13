@@ -12,9 +12,9 @@ namespace StudentManager.Controllers
     [Route("api/rule")]
     public class RuleController : Controller
     {
-        IRuleRepository ruleRepository;
+        RuleRepository ruleRepository;
 
-        public RuleController(IRuleRepository ruleRepository)
+        public RuleController(RuleRepository ruleRepository)
         {
             this.ruleRepository = ruleRepository;
         }

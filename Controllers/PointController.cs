@@ -14,10 +14,10 @@ namespace StudentManager.Controllers
     [Route("api/point")]
     public class PointController : Controller
     {
-        IPointTypeRepository pointTypeRepository;
-        IPointRepository pointRepository;
-        IRuleRepository ruleRepository;
-        public PointController(IPointTypeRepository pointTypeRepository, IPointRepository pointRepository, IRuleRepository ruleRepository)
+        PointTypeRepository pointTypeRepository;
+        PointRepository pointRepository;
+        RuleRepository ruleRepository;
+        public PointController(PointTypeRepository pointTypeRepository, PointRepository pointRepository, RuleRepository ruleRepository)
         {
             this.pointTypeRepository = pointTypeRepository;
             this.pointRepository = pointRepository;

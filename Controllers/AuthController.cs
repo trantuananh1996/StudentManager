@@ -19,11 +19,11 @@ namespace exam.Controllers
     [Route("api/auth")]
     public class AuthController : Controller
     {
-        private IUserRepository _iUserRepository;
-        private IRoleRepository roleRepository;
+        private UserRepository _iUserRepository;
+        private RoleRepository roleRepository;
         private string secrectKey = "needtogetthisfromenvironment";
         private int expiredMinute = 20;
-        public AuthController(IUserRepository iUserRepository,IRoleRepository role)
+        public AuthController(UserRepository iUserRepository,RoleRepository role)
         {
             _iUserRepository = iUserRepository;
             roleRepository = role;

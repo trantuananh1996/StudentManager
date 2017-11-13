@@ -17,16 +17,17 @@ namespace exam.Repository
         }
         public async Task Create(TEntity o)
         {
+
             if (o.Id == 0)
             {
                 await _context.Set<TEntity>().AddAsync(o);
                 await _context.SaveChangesAsync();
             }
             else await Update(o.Id, o);
-           
+
 
         }
-  
+
         public async Task Delete(int id)
         {
             var itemToDelete = await _context.Set<TEntity>().FindAsync(id);
@@ -34,12 +35,12 @@ namespace exam.Repository
             {
                 _context.Remove(itemToDelete);
                 await _context.SaveChangesAsync();
-            }                 
+            }
         }
 
         public async Task<TEntity> Get(int id)
         {
-            return await _context.Set<TEntity>().FindAsync(id);   
+            return await _context.Set<TEntity>().FindAsync(id);
         }
 
         public async Task<List<TEntity>> getAll()
@@ -61,7 +62,8 @@ namespace exam.Repository
                 }
                 catch (Exception ex)
                 {
-                    //  Logging.Log.Error(ex);
+                    ex.ToString();
+                      //Logging.Log.Error(ex);
                 }
             }
             //return the T type object:         
@@ -70,18 +72,18 @@ namespace exam.Repository
         public async Task Update(int id, TEntity o)
         {
             var itemToUpdate = await _context.Set<TEntity>().FindAsync(id);
-             if (itemToUpdate != null)
-             {
-                 itemToUpdate = o;
-                 await _context.SaveChangesAsync();
-            }            
+            if (itemToUpdate != null)
+            {
+                itemToUpdate = o;
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public async Task<List<TEntity>> paginate(int perPage,int page)
+        public async Task<List<TEntity>> paginate(int perPage, int page)
         {
             return await _context.Set<TEntity>().Take(perPage)
-                                 .Skip((page -1) * perPage)
-                                 .ToListAsync();   
+                                 .Skip((page - 1) * perPage)
+                                 .ToListAsync();
         }
     }
 }

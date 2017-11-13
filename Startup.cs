@@ -24,7 +24,7 @@ namespace exam
     public class Startup
     {
         private string secrectKey = "needtogetthisfromenvironment";
-        private string connectStr = "Server=localhost;database=quanlihocsinh;uid=root;pwd=root";
+        private string connectStr = "Server=localhost;database=quanlihocsinh;uid=root;pwd=root;Convert Zero Datetime=True";
         public Startup(IConfiguration configuration)
         {
             
@@ -66,17 +66,18 @@ namespace exam
                 c.SwaggerDoc("v1", new Info { Title = "Exmam API", Version = "v1" });
             });
 
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IStudentRepository, StudentRepository>();
-            services.AddScoped<INationRepository, NationRepository>();
-            services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<IReligionRepository, ReligionRepository>();
-            services.AddScoped<IClassRepository, ClassRepository>();
-            services.AddScoped<IStudentClassRepository, StudentClassRepository>();
-            services.AddScoped<IGradeRepository, GradeRepository>();
-            services.AddScoped<IPointTypeRepository, PointTypeRepository>();
-            services.AddScoped<IPointRepository, PointRepository>();
-            services.AddScoped<IRuleRepository, RuleRepository>();
+            services.AddScoped<UserRepository, UserRepository>();
+            services.AddScoped<StudentRepository, StudentRepository>();
+            services.AddScoped<RoleRepository, RoleRepository>();
+            services.AddScoped<ReligionRepository, ReligionRepository>();
+            services.AddScoped<ClassRepository, ClassRepository>();
+            services.AddScoped<StudentClassRepository, StudentClassRepository>();
+            services.AddScoped<GradeRepository, GradeRepository>();
+            services.AddScoped<PointTypeRepository, PointTypeRepository>();
+            services.AddScoped<PointRepository, PointRepository>();
+            services.AddScoped<RuleRepository, RuleRepository>();
+            services.AddScoped<NationRepository, NationRepository>();
+
 
 
             services.AddMvc();

@@ -23,6 +23,7 @@ namespace exam.Models
         public DbSet<PointType> pointTypes { get; set; }
         public DbSet<Semester> semesters { get; set; }
 
+        public DbSet<Nation> nations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

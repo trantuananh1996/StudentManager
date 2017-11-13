@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using StudentManager.Models.Post;
+using Microsoft.EntityFrameworkCore;
 
 namespace exam.Repository
 {
@@ -10,6 +12,40 @@ namespace exam.Repository
     {
         public StudentClassRepository(ApplicationDbContext context) : base(context)
         {
+
+        }
+        public new async Task Create(StudentClass st)
+        {
+            StudentClass exist = await _context.studentClasses.Where(s => s.ClassId == st.ClassId && s.StudentId == st.StudentId).FirstOrDefaultAsync();
+            if (exist == null) await base.Create(st);
+        }
+        public async Task MoveClass(PostMoveClass post)
+        {
+            List<StudentClass> stCls = await _context.studentClasses.Where(cl => cl.ClassId == post.SourceClass).ToListAsync();
+            if (stCls.Any())
+                foreach (int sId in post.StudentIds)
+                {
+                    var studentClass = await _context.studentClasses.Where(s => s.ClassId == post.SourceClass && s.StudentId == sId).FirstOrDefaultAsync();
+                    // var point = await _context.points.Where(s => s.Student.Id == sId && s.Class.Id == post.SourceClass).FirstOrDefaultAsync();
+
+                    if (studentClass == null)
+                    {
+                        await Create(studentClass);
+                    }
+                    else
+                    {
+                        studentClass.ClassId = post.TargetClass;
+                        await Update(studentClass.Id, studentClass);
+                    }
+
+                }
+            else
+            {
+                foreach (int sId in post.StudentIds)
+                {
+                    await Create(new Models.StudentClass { StudentId = sId, ClassId = post.TargetClass });
+                }
+            }
         }
     }
 }
