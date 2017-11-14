@@ -24,7 +24,8 @@ namespace exam.Models
         public DbSet<Semester> Semesters { get; set; }
         public DbSet<SchoolYear> SchoolYears { get; set; }
         public DbSet<Nation> Nations { get; set; }
-
+        public DbSet<Job> Jobs { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
            
