@@ -25,9 +25,18 @@ namespace exam
     {
         private string secrectKey = "needtogetthisfromenvironment";
         private string connectStr = "Server=localhost;database=quanlihocsinh;uid=root;pwd=root;Convert Zero Datetime=True";
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
-            
+            var builder = new ConfigurationBuilder()
+              .SetBasePath(env.ContentRootPath)
+              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+              .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+              .AddEnvironmentVariables();
+            if (env.IsDevelopment())
+            {
+                // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
+                builder.AddApplicationInsightsSettings(developerMode: true);
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -78,6 +87,8 @@ namespace exam
             services.AddScoped<RuleRepository, RuleRepository>();
             services.AddScoped<NationRepository, NationRepository>();
             services.AddScoped<SchoolYearRepository, SchoolYearRepository>();
+            services.AddScoped<JobRepository, JobRepository>();
+            services.AddScoped<SubjectRepository, SubjectRepository>();
 
 
 

@@ -18,5 +18,11 @@ namespace exam.Models
        // public virtual Job FatherJob { get; set; }
         public string MotherName { get; set; }
        // public virtual Job MotherJob { get; set; }
+
+        public string ReadableGender()
+        {
+            if (Gender == 1) return "Nam";
+            else return "Nữ";
+        }
     }
 }

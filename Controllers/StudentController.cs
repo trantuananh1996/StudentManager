@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using exam.Utils;
 using Microsoft.AspNetCore.Authorization;
 using exam.Models.Post;
+using Microsoft.AspNetCore.Http;
+using System.Reflection;
 
 namespace exam.Controllers
 {
@@ -22,6 +24,87 @@ namespace exam.Controllers
             studentRepository = user;
             nationRepository = nat;
             religionRepository = rel;
+        }
+        [HttpGet]
+        public async Task<IActionResult> Home()
+        {
+            var students =await studentRepository.getAll();
+            return View();
+        }
+
+        /// <summary>
+        /// Get a property info object from Item class filtering by property name.
+        /// </summary>
+        /// <param name="name">name of the property</param>
+        /// <returns>property info object</returns>
+        private PropertyInfo getProperty(string name)
+        {
+            var properties = typeof(Student).GetProperties();
+            PropertyInfo prop = null;
+            foreach (var item in properties)
+            {
+                if (item.Name.ToLower().Equals(name.ToLower()))
+                {
+                    prop = item;
+                    break;
+                }
+            }
+            return prop;
+        }
+
+        /// <summary>
+        /// Process a list of items according to Form data parameters
+        /// </summary>
+        /// <param name="lstElements">list of elements</param>
+        /// <param name="requestFormData">collection of form data sent from client side</param>
+        /// <returns>list of items processed</returns>
+        private List<Student> ProcessCollection(List<Student> lstElements, IFormCollection requestFormData)
+        {
+            var skip = Convert.ToInt32(requestFormData["start"].ToString());
+            var pageSize = Convert.ToInt32(requestFormData["length"].ToString());
+            Microsoft.Extensions.Primitives.StringValues tempOrder = new[] { "" };
+
+            if (requestFormData.TryGetValue("order[0][column]", out tempOrder))
+            {
+                var columnIndex = requestFormData["order[0][column]"].ToString();
+                var sortDirection = requestFormData["order[0][dir]"].ToString();
+                tempOrder = new[] { "" };
+                if (requestFormData.TryGetValue($"columns[{columnIndex}][data]", out tempOrder))
+                {
+                    var columName = requestFormData[$"columns[{columnIndex}][data]"].ToString();
+
+                    if (pageSize > 0)
+                    {
+                        var prop = getProperty(columName);
+                        if (sortDirection == "asc")
+                        {
+                            return lstElements.OrderBy(prop.GetValue).Skip(skip).Take(pageSize).ToList();
+                        }
+                        else
+                            return lstElements.OrderByDescending(prop.GetValue).Skip(skip).Take(pageSize).ToList();
+                    }
+                    else
+                        return lstElements;
+                }
+            }
+            return null;
+        }
+
+        [HttpGet("show")]
+        public async Task<IActionResult> PostAsync()
+        {
+            //Get form data from client side
+            List<Student> lstItems =  await studentRepository.getAll();
+
+
+            // Custom response to bind information in client side
+            dynamic response = new
+            {
+                Data = lstItems,
+                RecordsFiltered = lstItems.Count,
+                RecordsTotal = lstItems.Count
+            };
+            return Ok(response);
         }
 
         [HttpGet("find")]

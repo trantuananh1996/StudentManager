@@ -25,7 +25,6 @@ namespace StudentManager.Controllers
             var SchoolYears = await schoolYearRepository.getAll();
             if (SchoolYears == null || !SchoolYears.Any()) return NotFound(new { message = "Không có năm học nào" });
             return Ok(new { status = ResultStatus.STATUS_OK, data = SchoolYears });
-
         }
 
         [HttpGet("{id}")]
@@ -56,7 +55,7 @@ namespace StudentManager.Controllers
         public async Task<IActionResult> Edit([FromBody] SchoolYear student)
         {
             var user = await schoolYearRepository.Get(student.Id);
-            if (user == null) return Ok(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy năm học" });
+            if (user == null) return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy năm học" });
 
             if (String.IsNullOrEmpty(student.Name))
                 return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Tên năm học không được để trống" });
@@ -72,7 +71,7 @@ namespace StudentManager.Controllers
         {
             var user = await schoolYearRepository.Get(id);
             if (user == null)
-                return Ok(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy năm học" });
+                return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy năm học" });
             await schoolYearRepository.Delete(id);
             return Ok(new { status = ResultStatus.STATUS_OK, message = "Xóa thành công!" });
         }
