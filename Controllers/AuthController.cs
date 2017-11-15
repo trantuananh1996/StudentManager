@@ -15,7 +15,7 @@ using exam.Utils;
 
 namespace exam.Controllers
 {
-    
+
     [Route("api/auth")]
     public class AuthController : Controller
     {
@@ -23,7 +23,7 @@ namespace exam.Controllers
         private RoleRepository roleRepository;
         private string secrectKey = "needtogetthisfromenvironment";
         private int expiredMinute = 20;
-        public AuthController(UserRepository iUserRepository,RoleRepository role)
+        public AuthController(UserRepository iUserRepository, RoleRepository role)
         {
             _iUserRepository = iUserRepository;
             roleRepository = role;
@@ -44,7 +44,7 @@ namespace exam.Controllers
             if (String.IsNullOrEmpty(newU.Name)) return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Thiếu họ tên người dùng" });
             if (String.IsNullOrEmpty(newU.Username) || String.IsNullOrEmpty(newU.Password)) return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Thiếu tên đăng nhập hoặc mật khẩu" });
             if (String.IsNullOrEmpty(newU.Password) || String.IsNullOrEmpty(newU.Password)) return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Mật khẩu không được để trống" });
-            if (newU.Password.Length<6) return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Mật khẩu không được ngắn hơn 6 kí tự" });
+            if (newU.Password.Length < 6) return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Mật khẩu không được ngắn hơn 6 kí tự" });
 
             if (!newU.Password.Equals(newU.Password_confirm))
             {
@@ -63,10 +63,10 @@ namespace exam.Controllers
             }
             if (newU.Role.Equals(RoleCode.ROLE_ADMIN))
             {
-                return Ok(new { status=ResultStatus.STATUS_FOBIDDEN,message="Không thể tạo tài khoản mang quyền Admin"});
+                return Ok(new { status = ResultStatus.STATUS_FOBIDDEN, message = "Không thể tạo tài khoản mang quyền Admin" });
             }
             var role = await roleRepository.FindRoleById(newU.Role);
-            if (role == null) return Ok(new { status=ResultStatus.STATUS_INVALID_INPUT,message="Không tìm thấy quyền"});
+            if (role == null) return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Không tìm thấy quyền" });
             var user = new User
             {
                 name = newU.Name,
@@ -78,7 +78,7 @@ namespace exam.Controllers
             };
 
             await _iUserRepository.Create(user);
-            return Ok(new {status=1, data = user});
+            return Ok(new { status = 1, data = user });
         }
 
         [HttpPost]
@@ -88,53 +88,48 @@ namespace exam.Controllers
             var user = await _iUserRepository.FindByUsername(loginModel.Username);
             if (user == null || !user.password.Equals(loginModel.Password))
             {
-                return Ok(new { status=ResultStatus.STATUS_INVALID_INPUT,message="Sai tên đăng nhập hoặc mật khẩu"});
+                return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Sai tên đăng nhập hoặc mật khẩu" });
             }
             if (user.IsLocked.Equals(1))
             {
                 return Ok(new { status = ResultStatus.STATUS_FOBIDDEN, message = "Tài khoản bị khóa" });
             }
             var token = genToken(user);
-            return Ok(new { status = ResultStatus.STATUS_OK,data=new { token = genToken(user),user=user } });
+            return Ok(new { status = ResultStatus.STATUS_OK, data = new { token = genToken(user), user = user } });
         }
 
-        public string genToken(User u)
+        private string genToken(User u)
         {
-            var symmetricKey = Convert.FromBase64String(secrectKey);
-            var tokenHandler = new JwtSecurityTokenHandler();
 
-            var now = DateTime.UtcNow;
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                        {
-                        new Claim(JwtRegisteredClaimNames.NameId, u.email),
+            var key = new SymmetricSecurityKey(Encoding.Default.GetBytes(this.secrectKey));
+            var claims = new Claim[]{
+                new Claim(JwtRegisteredClaimNames.NameId, u.email),
                 new Claim(JwtRegisteredClaimNames.Jti,u.email),
 
-                new Claim(ClaimTypes.Role,u.Role+""),
+                new Claim(ClaimTypes.Role,u.Role.Id+""),
+                new Claim("userid",u.Id + ""),
                 new Claim(JwtRegisteredClaimNames.Exp, $"{new DateTimeOffset(DateTime.Now.AddDays(1)).ToUnixTimeSeconds()}"),
                 new Claim(JwtRegisteredClaimNames.Nbf, $"{new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds()}")
-
-                    }),
-
-                Expires = now.AddMinutes(Convert.ToInt32(expiredMinute)),
-
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature)
             };
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+            );
+            var tokenStr = new JwtSecurityTokenHandler().WriteToken(token);
 
-            var stoken = tokenHandler.CreateToken(tokenDescriptor);
-            var token = tokenHandler.WriteToken(stoken);
-
-            return token;
+            return tokenStr;
         }
         [Authorize]
         [HttpGet]
         [Route("info")]
-        public IActionResult UserInfo()
+        public async Task<ActionResult> UserInfo()
         {
-            var dict = new Dictionary<string, string>();
-            var caller = User.Claims.ToList();
-            return Ok(new {user= "ABC" });
+            var userid = User.Claims.FirstOrDefault(c => c.Type == "userid").Value;
+            if (userid == null) return BadRequest(new { message = "Không tìm thấy người dùng" });
+            User u = await _iUserRepository.Get(Int16.Parse(userid));
+            if (u == null) return BadRequest(new { message = "Không tìm thấy người dùng" });
+            return Ok(new { status = ResultStatus.STATUS_OK, data = u });
         }
     }
 }

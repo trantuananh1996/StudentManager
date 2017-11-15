@@ -1,4 +1,7 @@
-﻿using exam.Utils;
+﻿using exam.Models;
+using exam.Repository;
+using exam.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentManager.Models;
 using StudentManager.Repository;
@@ -13,15 +16,21 @@ namespace StudentManager.Controllers
     public class RuleController : Controller
     {
         RuleRepository ruleRepository;
+        UserRepository userRepository;
 
-        public RuleController(RuleRepository ruleRepository)
+        public RuleController(RuleRepository ruleRepository, UserRepository userRepository)
         {
             this.ruleRepository = ruleRepository;
+            this.userRepository = userRepository;
         }
 
+        [Authorize(Roles = "1,3")]
         [HttpGet("show")]
         public async Task<ActionResult> GetRule()
         {
+            var userid = User.Claims.FirstOrDefault(c => c.Type == "userid").Value;
+            User u = await userRepository.Get(Int16.Parse(userid));
+
             var rule = await ruleRepository.Get(1);
             if (rule == null) return Ok(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy quy định" });
             else return Ok(new { status = ResultStatus.STATUS_OK, data = rule });
