@@ -13603,7 +13603,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Tran Anh\\.nuget\\packages\\": {},
+    "C:\\Users\\ssj\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -13612,17 +13612,17 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Tran Anh\\Documents\\GitHub\\StudentManager\\StudentManager.csproj",
+      "projectUniqueName": "E:\\HK1-2017-2018\\Cac Van De Hien Dai Cua CNTT\\phan_chia\\StudentManager\\StudentManager.csproj",
       "projectName": "StudentManager",
-      "projectPath": "C:\\Users\\Tran Anh\\Documents\\GitHub\\StudentManager\\StudentManager.csproj",
-      "packagesPath": "C:\\Users\\Tran Anh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Tran Anh\\Documents\\GitHub\\StudentManager\\obj\\",
+      "projectPath": "E:\\HK1-2017-2018\\Cac Van De Hien Dai Cua CNTT\\phan_chia\\StudentManager\\StudentManager.csproj",
+      "packagesPath": "C:\\Users\\ssj\\.nuget\\packages\\",
+      "outputPath": "E:\\HK1-2017-2018\\Cac Van De Hien Dai Cua CNTT\\phan_chia\\StudentManager\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Tran Anh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ssj\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
