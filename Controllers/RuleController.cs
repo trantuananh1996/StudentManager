@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace StudentManager.Controllers
 {
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard,Admin")]
     [Route("api/rule")]
     public class RuleController : Controller
     {
@@ -24,19 +25,18 @@ namespace StudentManager.Controllers
             this.userRepository = userRepository;
         }
 
-        [Authorize(Roles = "1,3")]
-        [HttpGet("show")]
+        [HttpGet]
         public async Task<ActionResult> GetRule()
         {
             var userid = User.Claims.FirstOrDefault(c => c.Type == "userid").Value;
             User u = await userRepository.Get(Int16.Parse(userid));
 
             var rule = await ruleRepository.Get(1);
-            if (rule == null) return Ok(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy quy định" });
+            if (rule == null) return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy quy định" });
             else return Ok(new { status = ResultStatus.STATUS_OK, data = rule });
         }
 
-        [HttpPost("update")]
+        [HttpPut]
         public async Task<ActionResult> UpdateRule([FromBody] Rule rule)
         {
             if (rule.Id == default(int))

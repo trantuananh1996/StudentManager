@@ -14,76 +14,86 @@ using System.Threading.Tasks;
 
 namespace exam.Controllers
 {
-    [Route("api/grade")]
+    [Route("api/grades")]
     public class GradeController : Controller
     {
-        GradeRepository gradeRepository;
+        GradeRepository GradeRepository;
 
-        public GradeController(GradeRepository gradeRepository)
+        public GradeController(GradeRepository repo)
         {
-            this.gradeRepository = gradeRepository;
+            this.GradeRepository = repo;
         }
 
-        [HttpGet("list")]
-        public async Task<IActionResult> List()
+        [Microsoft.AspNetCore.Authorization.Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetList()
         {
-            var grade = await gradeRepository.getAll();
-            if (grade == null || !grade.Any()) return NotFound(new { message = "Du lieu khong ton tai" });
-            return Ok(new { status = ResultStatus.STATUS_OK, data = grade });
+            var nations = await GradeRepository.GetAll();
+            if (nations == null || !nations.Any()) return NotFound(new { message = "Không có khối lớp nào" });
+            return Ok(new { status = ResultStatus.STATUS_OK, data = nations });
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSchoolYear(int id)
+        public async Task<IActionResult> GetItem(int id)
         {
-            var grade = await gradeRepository.Get(id);
-            if (grade == null)
-                return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy nghề nghiệp" });
-            return Ok(new { status = ResultStatus.STATUS_OK, data = grade });
+            var nation = await GradeRepository.Get(id);
+            if (nation == null)
+                return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy khối lớp" });
+            return Ok(new { status = ResultStatus.STATUS_OK, data = nation });
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
         [HttpPost]
-        [Route("create")]
-        public async Task<IActionResult> Create([FromBody] Grade grade)
+        public async Task<IActionResult> CreateItem([FromBody] Grade fromBody)
         {
-            if (String.IsNullOrEmpty(grade.Name))
-                return Ok(new
+            if (String.IsNullOrEmpty(fromBody.Name))
+                return BadRequest(new
                 {
                     status = ResultStatus.STATUS_INVALID_INPUT,
-                    message = "Tên nghề nghiệp không được để trống"
+                    message = "Tên khối lớp không được để trống"
                 });
-            await gradeRepository.Create(grade);
+            var exist = await GradeRepository.FindByName(fromBody.Name);
+            if (exist != null) return BadRequest(new
+            {
+                status = ResultStatus.STATUS_DUPLICATE,
+                message = "Đã có khối lớp này tồn tại trong hệ thống"
+            });
+            await GradeRepository.Create(fromBody);
             return Ok(new
             {
                 status = ResultStatus.STATUS_OK,
-                data = grade
+                data = fromBody
             });
         }
 
-        [HttpPost("edit")]
-        public async Task<IActionResult> Edit([FromBody] Grade grade)
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutItem(int id, [FromBody] Grade fromBody)
         {
-            var user = await gradeRepository.Get(grade.Id);
-            if (user == null) return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy nghề nghiệp" });
+            var exist = await GradeRepository.Get(id);
+            if (exist == null) return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy khối lớp" });
 
-            if (String.IsNullOrEmpty(grade.Name))
-                return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Tên khối không được để trống" });
+            if (String.IsNullOrEmpty(fromBody.Name))
+                return BadRequest(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Tên khối lớp không được để trống" });
 
 
-            user.Name = grade.Name;
-            await gradeRepository.Update(grade.Id, grade);
-            return Ok(new { status = ResultStatus.STATUS_OK, message = "Sửa thông tin khối thanh cong", data = grade });
+            exist.Name = fromBody.Name;
+
+            await GradeRepository.Update(id, fromBody);
+            return Ok(new { status = ResultStatus.STATUS_OK, message = "Sửa thông tin khối lớp thành công", data = exist });
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var user = await gradeRepository.Get(id);
-            if (user == null)
-                return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy khối" });
-            await gradeRepository.Delete(id);
+            var exist = await GradeRepository.Get(id);
+            if (exist == null)
+                return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy khối lớp" });
+            await GradeRepository.Delete(id);
             return Ok(new { status = ResultStatus.STATUS_OK, message = "Xóa thành công!" });
         }
-
     }
 }
 

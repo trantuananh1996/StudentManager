@@ -69,7 +69,6 @@ namespace exam
                              IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.secrectKey))
                          };
                      });
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Exmam API", Version = "v1" });
@@ -96,14 +95,12 @@ namespace exam
             services.AddScoped<SchoolYearRepository, SchoolYearRepository>();
             services.AddScoped<JobRepository, JobRepository>();
             services.AddScoped<SubjectRepository, SubjectRepository>();
-<<<<<<< HEAD
             services.AddScoped<TeacherRepository, TeacherRepository>();
-=======
             services.AddScoped<LearningCapacitiesRepository, LearningCapacitiesRepository>();
             services.AddScoped<ResultRepository, ResultRepository>();
             services.AddScoped<ConductRepository, ConductRepository>();
             services.AddScoped<SemesterRepository, SemesterRepository>();
->>>>>>> d715b88b3e14bb49a635b7f71482c517d3a44f64
+            services.AddScoped<AssignmentRepository, AssignmentRepository>();
 
 
 
@@ -127,6 +124,7 @@ namespace exam
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+
         }
     }
 }

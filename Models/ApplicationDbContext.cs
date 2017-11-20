@@ -26,6 +26,11 @@ namespace exam.Models
         public DbSet<Nation> Nations { get; set; }
         public DbSet<Job> Jobs { get; set; }
         public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Religion> Religions { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Conduct> Conducts { get; set; }
+        public DbSet<LearningCapacities> LearningCapacities { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
            

@@ -33,7 +33,7 @@ namespace exam.Controllers
         [Route("roles")]
         public async Task<IActionResult> Roles()
         {
-            var roles = await roleRepository.getAll();
+            var roles = await roleRepository.GetAll();
             return Ok(new { status = ResultStatus.STATUS_OK, data = roles });
         }
 
@@ -106,7 +106,7 @@ namespace exam.Controllers
                 new Claim(JwtRegisteredClaimNames.NameId, u.email),
                 new Claim(JwtRegisteredClaimNames.Jti,u.email),
 
-                new Claim(ClaimTypes.Role,u.Role.Id+""),
+                new Claim(ClaimTypes.Role,u.Role.CodeName),
                 new Claim("userid",u.Id + ""),
                 new Claim(JwtRegisteredClaimNames.Exp, $"{new DateTimeOffset(DateTime.Now.AddDays(1)).ToUnixTimeSeconds()}"),
                 new Claim(JwtRegisteredClaimNames.Nbf, $"{new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds()}")

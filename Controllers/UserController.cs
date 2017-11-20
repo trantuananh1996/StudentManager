@@ -18,6 +18,7 @@ namespace exam.Controllers
         /// Get list users
         /// </summary>
         /// <returns>The list.</returns>
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpGet("list")]
         public async Task<IActionResult> List(int perpage,int page = 1)
         {
@@ -26,13 +27,14 @@ namespace exam.Controllers
                 var users = await _user.getAll();
                 return Ok(users);
             } else {
-                var users = await _user.paginate(perpage, page);
+                var users = await _user.Paginate(perpage, page);
                 return Ok(users);
             }
 
 
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
@@ -45,6 +47,7 @@ namespace exam.Controllers
         /// </summary>
         /// <returns>The create.</returns>
         /// <param name="u">U.</param>
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> Create([FromBody] User u)
@@ -63,6 +66,7 @@ namespace exam.Controllers
         /// <returns>The edit.</returns>
         /// <param name="id">Identifier.</param>
         /// <param name="u">U.</param>
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit(int id,String password)
         {
@@ -73,6 +77,7 @@ namespace exam.Controllers
             return Ok(new { msg = "Updated!",user = user });
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

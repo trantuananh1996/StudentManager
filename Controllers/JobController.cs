@@ -1,83 +1,99 @@
 ﻿using exam.Models;
+using exam.Repository;
 using exam.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudentManager.Models;
 using StudentManager.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace StudentManager.Controllers
+
+
+namespace exam.Controllers
 {
-    [Route("api/job")]
+    [Route("api/jobs")]
     public class JobController : Controller
     {
-        JobRepository jobRepository;
+        JobRepository JobRepository;
 
-        public JobController(JobRepository jobRepository)
+        public JobController(JobRepository repo)
         {
-            this.jobRepository = jobRepository;
+            this.JobRepository = repo;
         }
 
-        [HttpGet("list")]
-        public async Task<IActionResult> List()
+        [Microsoft.AspNetCore.Authorization.Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetList()
         {
-            var job = await jobRepository.getAll();
-            if (job == null || !job.Any()) return NotFound(new { message = "Không có nghề nghiệp nào" });
-            return Ok(new { status = ResultStatus.STATUS_OK, data = job });
+            var nations = await JobRepository.GetAll();
+            if (nations == null || !nations.Any()) return NotFound(new { message = "Không có nghề nghiệp nào" });
+            return Ok(new { status = ResultStatus.STATUS_OK, data = nations });
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSchoolYear(int id)
+        public async Task<IActionResult> GetItem(int id)
         {
-            var job = await jobRepository.Get(id);
-            if (job == null)
+            var nation = await JobRepository.Get(id);
+            if (nation == null)
                 return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy nghề nghiệp" });
-            return Ok(new { status = ResultStatus.STATUS_OK, data = job });
+            return Ok(new { status = ResultStatus.STATUS_OK, data = nation });
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
         [HttpPost]
-        [Route("create")]
-        public async Task<IActionResult> Create([FromBody] Job job)
+        public async Task<IActionResult> CreateItem([FromBody] Job fromBody)
         {
-            if (String.IsNullOrEmpty(job.Name))
-                return Ok(new
+            if (String.IsNullOrEmpty(fromBody.Name))
+                return BadRequest(new
                 {
                     status = ResultStatus.STATUS_INVALID_INPUT,
                     message = "Tên nghề nghiệp không được để trống"
                 });
-            await jobRepository.Create(job);
+            var exist = await JobRepository.FindByName(fromBody.Name);
+            if (exist != null) return BadRequest(new
+            {
+                status = ResultStatus.STATUS_DUPLICATE,
+                message = "Đã có nghề nghiệp này tồn tại trong hệ thống"
+            });
+            await JobRepository.Create(fromBody);
             return Ok(new
             {
                 status = ResultStatus.STATUS_OK,
-                data = job
+                data = fromBody
             });
         }
 
-        [HttpPost("edit")]
-        public async Task<IActionResult> Edit([FromBody] Job job)
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutItem(int id, [FromBody] Job fromBody)
         {
-            var user = await jobRepository.Get(job.Id);
-            if (user == null) return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy nghề nghiệp" });
+            var exist = await JobRepository.Get(id);
+            if (exist == null) return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy nghề nghiệp" });
 
-            if (String.IsNullOrEmpty(job.Name))
-                return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Tên nghề nghiệp không được để trống" });
+            if (String.IsNullOrEmpty(fromBody.Name))
+                return BadRequest(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Tên nghề nghiệp không được để trống" });
 
 
-            user.Name = job.Name;
-            await jobRepository.Update(job.Id, job);
-            return Ok(new { status = ResultStatus.STATUS_OK, message = "Sửa thông tin nghề nghiệp thành công", data = job });
+            exist.Name = fromBody.Name;
+
+            await JobRepository.Update(id, fromBody);
+            return Ok(new { status = ResultStatus.STATUS_OK, message = "Sửa thông tin nghề nghiệp thành công", data = exist });
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var user = await jobRepository.Get(id);
-            if (user == null)
+            var exist = await JobRepository.Get(id);
+            if (exist == null)
                 return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy nghề nghiệp" });
-            await jobRepository.Delete(id);
+            await JobRepository.Delete(id);
             return Ok(new { status = ResultStatus.STATUS_OK, message = "Xóa thành công!" });
         }
-
     }
 }
+

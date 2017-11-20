@@ -28,7 +28,7 @@ namespace exam.Controllers
         [HttpGet]
         public async Task<IActionResult> Home()
         {
-            var students =await studentRepository.getAll();
+            var students =await studentRepository.GetAll();
             return View();
         }
 
@@ -94,7 +94,7 @@ namespace exam.Controllers
         public async Task<IActionResult> PostAsync()
         {
             //Get form data from client side
-            List<Student> lstItems =  await studentRepository.getAll();
+            List<Student> lstItems =  await studentRepository.GetAll();
 
 
             // Custom response to bind information in client side
@@ -108,6 +108,7 @@ namespace exam.Controllers
         }
 
         [HttpGet("find")]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         public async Task<ActionResult> FindStudentByName(string name)
         {
             List<Student> students= await studentRepository.FindStudentByName(name);
@@ -117,11 +118,12 @@ namespace exam.Controllers
         }
 
         [HttpPost("list")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard,Teacher")]
         public async Task<IActionResult> List([FromBody] PostClassId Class)
         {
             if (Class.ClassId==0)
             {
-                var users = await studentRepository.getAll();
+                var users = await studentRepository.GetAll();
                 return Ok(new {status = ResultStatus.STATUS_OK, data= users });
             }
             else
@@ -131,6 +133,7 @@ namespace exam.Controllers
             }
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard,Teacher")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
@@ -140,6 +143,7 @@ namespace exam.Controllers
         }
 
         [HttpPost]
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Teacher,SchoolBoard")]
         [Route("create")]
         public async Task<IActionResult> Create([FromBody] Student u)
         {
@@ -155,6 +159,7 @@ namespace exam.Controllers
             });
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard,Teacher")]
         [HttpPost("edit")]
         public async Task<IActionResult> Edit( [FromBody] Student student)
         {
@@ -168,6 +173,7 @@ namespace exam.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard,Teacher")]
         public async Task<IActionResult> Delete(int id)
         {
             var user = await studentRepository.Get(id);

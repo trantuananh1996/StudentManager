@@ -19,16 +19,18 @@ namespace StudentManager.Controllers
             this.subjectRepository = subjectRepository;
         }
 
-        [HttpGet("list")]
-        public async Task<IActionResult> List()
+        [Microsoft.AspNetCore.Authorization.Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetList()
         {
-            var subjects = await subjectRepository.getAll();
+            var subjects = await subjectRepository.GetAll();
             if (subjects == null || !subjects.Any()) return NotFound(new { message = "Không có môn học nào" });
             return Ok(new { status = ResultStatus.STATUS_OK, data = subjects });
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSchoolYear(int id)
+        public async Task<IActionResult> GetItem(int id)
         {
             var subject = await subjectRepository.Get(id);
             if (subject == null)
@@ -36,18 +38,18 @@ namespace StudentManager.Controllers
             return Ok(new { status = ResultStatus.STATUS_OK, data = subject });
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
         [HttpPost]
-        [Route("create")]
         public async Task<IActionResult> Create([FromBody] Subject subject)
         {
             if (String.IsNullOrEmpty(subject.Name))
-                return Ok(new
+                return BadRequest(new
                 {
                     status = ResultStatus.STATUS_INVALID_INPUT,
                     message = "Tên môn học không được để trống"
                 });
             if (subject.LessionSize == default(int))
-                return Ok(new
+                return BadRequest(new
                 {
                     status = ResultStatus.STATUS_INVALID_INPUT,
                     message = "Số tiết học không được để trống"
@@ -62,24 +64,31 @@ namespace StudentManager.Controllers
             });
         }
 
-        [HttpPost("edit")]
-        public async Task<IActionResult> Edit([FromBody] Subject subject)
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Edit(int id,[FromBody] Subject subject)
         {
-            var exist = await subjectRepository.Get(subject.Id);
+            var exist = await subjectRepository.Get(id);
             if (exist == null) return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy môn học" });
 
             if (String.IsNullOrEmpty(subject.Name))
-                return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Tên môn học không được để trống" });
-
+                return BadRequest(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Tên môn học không được để trống" });
+            if (subject.LessionSize == default(int))
+                return BadRequest(new
+                {
+                    status = ResultStatus.STATUS_INVALID_INPUT,
+                    message = "Số tiết học không được để trống"
+                });
 
             exist.Name = subject.Name;
             exist.LessionSize = subject.LessionSize;
             exist.Factor = subject.Factor;
 
-            await subjectRepository.Update(subject.Id, subject);
-            return Ok(new { status = ResultStatus.STATUS_OK, message = "Sửa thông tin môn học thành công", data = subject });
+            await subjectRepository.Update(id, subject);
+            return Ok(new { status = ResultStatus.STATUS_OK, message = "Sửa thông tin môn học thành công", data = exist });
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

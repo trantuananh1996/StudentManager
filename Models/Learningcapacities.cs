@@ -8,5 +8,8 @@ namespace exam.Models
     public class LearningCapacities : BaseModel
     {
         public string Name { get; set; }
+        public float MinPoint { get; set; }
+        public float MaxPoint { get; set; }
+        public float ControlPoint { get; set; }
     }
 }

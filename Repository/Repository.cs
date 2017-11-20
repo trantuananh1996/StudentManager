@@ -15,7 +15,7 @@ namespace exam.Repository
         {
             _context = context;
         }
-        public async Task Create(TEntity o)
+        public async Task<TEntity> Create(TEntity o)
         {
 
             if (o.Id == 0)
@@ -25,6 +25,7 @@ namespace exam.Repository
             }
             else await Update(o.Id, o);
 
+            return o;
 
         }
 
@@ -43,7 +44,7 @@ namespace exam.Repository
             return await _context.Set<TEntity>().FindAsync(id);
         }
 
-        public async Task<List<TEntity>> getAll()
+        public async Task<List<TEntity>> GetAll()
         {
             return await _context.Set<TEntity>().ToListAsync();
         }
@@ -69,7 +70,7 @@ namespace exam.Repository
             //return the T type object:         
             return tmp;
         }
-        public async Task Update(int id, TEntity o)
+        public async Task<TEntity> Update(int id, TEntity o)
         {
             var itemToUpdate = await _context.Set<TEntity>().FindAsync(id);
             if (itemToUpdate != null)
@@ -77,9 +78,10 @@ namespace exam.Repository
                 itemToUpdate = o;
                 await _context.SaveChangesAsync();
             }
+            return itemToUpdate;
         }
 
-        public async Task<List<TEntity>> paginate(int perPage, int page)
+        public async Task<List<TEntity>> Paginate(int perPage, int page)
         {
             return await _context.Set<TEntity>().Take(perPage)
                                  .Skip((page - 1) * perPage)

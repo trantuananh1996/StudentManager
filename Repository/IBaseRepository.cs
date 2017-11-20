@@ -6,12 +6,12 @@ namespace exam.Repository
 {
     public interface IBaseRepository<TEntity> where TEntity : class
     {
-        Task Create(TEntity o);
+        Task<TEntity> Create(TEntity o);
         Task Delete(int id);
-        Task Update(int primary, TEntity o);
+        Task<TEntity> Update(int primary, TEntity o);
 
         Task<TEntity> Get(int id);
-        Task<List<TEntity>> getAll();
-        Task<List<TEntity>> paginate(int perPage,int page = 1);
+        Task<List<TEntity>> GetAll();
+        Task<List<TEntity>> Paginate(int perPage,int page = 1);
     }
 }

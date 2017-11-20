@@ -13,7 +13,10 @@ namespace exam.Repository
         {
            
         }
-
+        public new async Task<User> Get(int id)
+        {
+            return await _context.Users.Where(u=>u.Id==id).Include("Role").FirstOrDefaultAsync();
+        }
         public async Task<User> FindByEmail(string email)
         {
             var user = await _context.Users.Where(u => u.email == email).Include("Role").FirstOrDefaultAsync();

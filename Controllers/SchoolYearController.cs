@@ -9,72 +9,85 @@ using System.Threading.Tasks;
 
 namespace StudentManager.Controllers
 {
-    [Route("api/schoolYear")]
+    [Route("api/school-years")]
     public class SchoolYearController : Controller
     {
-        SchoolYearRepository schoolYearRepository;
+        SchoolYearRepository SchoolYearRepository;
 
-        public SchoolYearController(SchoolYearRepository schoolYearRepository)
+        public SchoolYearController(SchoolYearRepository repo)
         {
-            this.schoolYearRepository = schoolYearRepository;
+            this.SchoolYearRepository = repo;
         }
 
-        [HttpGet("list")]
-        public async Task<IActionResult> List()
+        [Microsoft.AspNetCore.Authorization.Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetList()
         {
-            var SchoolYears = await schoolYearRepository.getAll();
-            if (SchoolYears == null || !SchoolYears.Any()) return NotFound(new { message = "Không có năm học nào" });
-            return Ok(new { status = ResultStatus.STATUS_OK, data = SchoolYears });
+            var nations = await SchoolYearRepository.GetAll();
+            if (nations == null || !nations.Any()) return NotFound(new { message = "Không có năm học nào" });
+            return Ok(new { status = ResultStatus.STATUS_OK, data = nations });
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSchoolYear(int id)
+        public async Task<IActionResult> GetItem(int id)
         {
-            var schoolyear = await schoolYearRepository.Get(id);
-            if (schoolyear == null)
+            var nation = await SchoolYearRepository.Get(id);
+            if (nation == null)
                 return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy năm học" });
-            return Ok(new { status = ResultStatus.STATUS_OK, data = schoolyear });
+            return Ok(new { status = ResultStatus.STATUS_OK, data = nation });
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
         [HttpPost]
-        [Route("create")]
-        public async Task<IActionResult> Create([FromBody] SchoolYear schoolyear)
+        public async Task<IActionResult> CreateItem([FromBody] SchoolYear fromBody)
         {
-            if (String.IsNullOrEmpty(schoolyear.Name))
-                return Ok(new {
-                    status = ResultStatus.STATUS_INVALID_INPUT, message = "Tên năm học không được để trống" });
-            await schoolYearRepository.Create(schoolyear);
+            if (String.IsNullOrEmpty(fromBody.Name))
+                return BadRequest(new
+                {
+                    status = ResultStatus.STATUS_INVALID_INPUT,
+                    message = "Tên năm học không được để trống"
+                });
+            var exist = await SchoolYearRepository.FindByName(fromBody.Name);
+            if (exist != null) return BadRequest(new
+            {
+                status = ResultStatus.STATUS_DUPLICATE,
+                message = "Đã có năm học này tồn tại trong hệ thống"
+            });
+            await SchoolYearRepository.Create(fromBody);
             return Ok(new
             {
                 status = ResultStatus.STATUS_OK,
-                data = schoolyear
+                data = fromBody
             });
         }
 
-        [HttpPost("edit")]
-        public async Task<IActionResult> Edit([FromBody] SchoolYear student)
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutItem(int id, [FromBody] SchoolYear fromBody)
         {
-            var user = await schoolYearRepository.Get(student.Id);
-            if (user == null) return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy năm học" });
+            var exist = await SchoolYearRepository.Get(id);
+            if (exist == null) return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy năm học" });
 
-            if (String.IsNullOrEmpty(student.Name))
-                return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Tên năm học không được để trống" });
+            if (String.IsNullOrEmpty(fromBody.Name))
+                return BadRequest(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Tên năm học không được để trống" });
 
 
-            user.Name = student.Name;
-            await schoolYearRepository.Update(student.Id,student);
-            return Ok(new { status = ResultStatus.STATUS_OK, message = "Sửa thông tin năm học thành công", data = student });
+            exist.Name = fromBody.Name;
+
+            await SchoolYearRepository.Update(id, fromBody);
+            return Ok(new { status = ResultStatus.STATUS_OK, message = "Sửa thông tin năm học thành công", data = exist });
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var user = await schoolYearRepository.Get(id);
-            if (user == null)
+            var exist = await SchoolYearRepository.Get(id);
+            if (exist == null)
                 return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy năm học" });
-            await schoolYearRepository.Delete(id);
+            await SchoolYearRepository.Delete(id);
             return Ok(new { status = ResultStatus.STATUS_OK, message = "Xóa thành công!" });
         }
-
     }
 }

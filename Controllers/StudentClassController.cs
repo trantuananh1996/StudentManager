@@ -21,13 +21,14 @@ namespace exam.Controllers
             this.studentClassRepository = stC;
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize]
         [HttpGet("classes")]
         public async Task<IActionResult> List()
         {
             var classes = await classRepository.getAll();
             return Ok(new { status = ResultStatus.STATUS_OK, data = classes });
         }
-
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles="SchoolBoard")]
         [HttpPost("createClass")]
         public async Task<IActionResult> CreateClass([FromBody] PostAddStudentClass post)
         {
@@ -41,6 +42,7 @@ namespace exam.Controllers
             return Ok(new {status=ResultStatus.STATUS_OK,data=new { classId=post.ClassId,students=post.StudentIds} });
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
         [HttpPost("move-class")]
         public async Task<ActionResult> MoveClass([FromBody] PostMoveClass post)
         {
