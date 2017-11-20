@@ -96,6 +96,10 @@ namespace exam
             services.AddScoped<SchoolYearRepository, SchoolYearRepository>();
             services.AddScoped<JobRepository, JobRepository>();
             services.AddScoped<SubjectRepository, SubjectRepository>();
+            services.AddScoped<LearningCapacitiesRepository, LearningCapacitiesRepository>();
+            services.AddScoped<ResultRepository, ResultRepository>();
+            services.AddScoped<ConductRepository, ConductRepository>();
+            services.AddScoped<SemesterRepository, SemesterRepository>();
 
 
 
