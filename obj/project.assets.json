@@ -2,6 +2,21 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.0": {
+      "jQuery/3.2.1": {
+        "type": "package"
+      },
+      "jQuery.UI.Combined/1.12.1": {
+        "type": "package",
+        "dependencies": {
+          "jQuery": "1.12.4"
+        }
+      },
+      "jQuery.Validation/1.16.0": {
+        "type": "package",
+        "dependencies": {
+          "jQuery": "1.4.4"
+        }
+      },
       "Libuv/1.10.0": {
         "type": "package",
         "dependencies": {
@@ -2420,6 +2435,13 @@
         },
         "runtime": {
           "lib/netstandard1.4/Microsoft.IdentityModel.Tokens.dll": {}
+        }
+      },
+      "Microsoft.jQuery.Unobtrusive.Validation/3.2.3": {
+        "type": "package",
+        "dependencies": {
+          "jQuery": "1.8.0",
+          "jQuery.Validation": "1.8.0.1"
         }
       },
       "Microsoft.Net.Http.Headers/2.0.0": {
@@ -5205,6 +5227,93 @@
     }
   },
   "libraries": {
+    "jQuery/3.2.1": {
+      "sha512": "Sc4jRcsItNXUoNmnPtD9DEnHCy5d4u0GOdDSKYL+b7PKtwajKO1YBJA55241G2M9KRCwSbtxV4ti3gb4n/pIew==",
+      "type": "package",
+      "path": "jquery/3.2.1",
+      "files": [
+        "Content/Scripts/jquery-3.2.1-vsdoc.js",
+        "Content/Scripts/jquery-3.2.1.js",
+        "Content/Scripts/jquery-3.2.1.min.js",
+        "Content/Scripts/jquery-3.2.1.min.map",
+        "Content/Scripts/jquery-3.2.1.slim.js",
+        "Content/Scripts/jquery-3.2.1.slim.min.js",
+        "Content/Scripts/jquery-3.2.1.slim.min.map",
+        "Tools/common.ps1",
+        "Tools/install.ps1",
+        "Tools/jquery-3.2.1.intellisense.js",
+        "Tools/uninstall.ps1",
+        "jquery.3.2.1.nupkg.sha512",
+        "jquery.nuspec"
+      ]
+    },
+    "jQuery.UI.Combined/1.12.1": {
+      "sha512": "5B0LrPZ0TLlwplPRu43h7fgMtDxMMEF31HajUqHSOJ7bC6nyJUJy7AkcuGaJdBrrZAZutnSBgXT01BGiIIC4TQ==",
+      "type": "package",
+      "path": "jquery.ui.combined/1.12.1",
+      "files": [
+        "Content/Content/themes/base/accordion.css",
+        "Content/Content/themes/base/all.css",
+        "Content/Content/themes/base/autocomplete.css",
+        "Content/Content/themes/base/base.css",
+        "Content/Content/themes/base/button.css",
+        "Content/Content/themes/base/core.css",
+        "Content/Content/themes/base/datepicker.css",
+        "Content/Content/themes/base/dialog.css",
+        "Content/Content/themes/base/draggable.css",
+        "Content/Content/themes/base/images/ui-bg_flat_0_aaaaaa_40x100.png",
+        "Content/Content/themes/base/images/ui-bg_flat_75_ffffff_40x100.png",
+        "Content/Content/themes/base/images/ui-bg_glass_55_fbf9ee_1x400.png",
+        "Content/Content/themes/base/images/ui-bg_glass_65_ffffff_1x400.png",
+        "Content/Content/themes/base/images/ui-bg_glass_75_dadada_1x400.png",
+        "Content/Content/themes/base/images/ui-bg_glass_75_e6e6e6_1x400.png",
+        "Content/Content/themes/base/images/ui-bg_glass_95_fef1ec_1x400.png",
+        "Content/Content/themes/base/images/ui-bg_highlight-soft_75_cccccc_1x100.png",
+        "Content/Content/themes/base/images/ui-icons_222222_256x240.png",
+        "Content/Content/themes/base/images/ui-icons_2e83ff_256x240.png",
+        "Content/Content/themes/base/images/ui-icons_444444_256x240.png",
+        "Content/Content/themes/base/images/ui-icons_454545_256x240.png",
+        "Content/Content/themes/base/images/ui-icons_555555_256x240.png",
+        "Content/Content/themes/base/images/ui-icons_777620_256x240.png",
+        "Content/Content/themes/base/images/ui-icons_777777_256x240.png",
+        "Content/Content/themes/base/images/ui-icons_888888_256x240.png",
+        "Content/Content/themes/base/images/ui-icons_cc0000_256x240.png",
+        "Content/Content/themes/base/images/ui-icons_cd0a0a_256x240.png",
+        "Content/Content/themes/base/images/ui-icons_ffffff_256x240.png",
+        "Content/Content/themes/base/jquery-ui.css",
+        "Content/Content/themes/base/jquery-ui.min.css",
+        "Content/Content/themes/base/menu.css",
+        "Content/Content/themes/base/progressbar.css",
+        "Content/Content/themes/base/resizable.css",
+        "Content/Content/themes/base/selectable.css",
+        "Content/Content/themes/base/selectmenu.css",
+        "Content/Content/themes/base/slider.css",
+        "Content/Content/themes/base/sortable.css",
+        "Content/Content/themes/base/spinner.css",
+        "Content/Content/themes/base/tabs.css",
+        "Content/Content/themes/base/theme.css",
+        "Content/Content/themes/base/tooltip.css",
+        "Content/Scripts/jquery-ui-1.12.1.js",
+        "Content/Scripts/jquery-ui-1.12.1.min.js",
+        "Tools/common.ps1",
+        "Tools/install.ps1",
+        "Tools/uninstall.ps1",
+        "jquery.ui.combined.1.12.1.nupkg.sha512",
+        "jquery.ui.combined.nuspec"
+      ]
+    },
+    "jQuery.Validation/1.16.0": {
+      "sha512": "5vvz+cw3ykW15RmXoc6GzSKndb1Se38u4cJ3cqEvZxmInf/9NwvOxu2EUYdK2mCsdDsvGn2m9HA7s9NOrr8Wdw==",
+      "type": "package",
+      "path": "jquery.validation/1.16.0",
+      "files": [
+        "Content/Scripts/jquery.validate-vsdoc.js",
+        "Content/Scripts/jquery.validate.js",
+        "Content/Scripts/jquery.validate.min.js",
+        "jquery.validation.1.16.0.nupkg.sha512",
+        "jquery.validation.nuspec"
+      ]
+    },
     "Libuv/1.10.0": {
       "sha512": "GsCf4q+eyaI49rCPlgYxdxa1SQCysXFFdSJWdstrwxytg4+VPYLYrXD4AT2rjHVJ+UF7SSWX9CapWEYaU4ejVQ==",
       "type": "package",
@@ -6237,7 +6346,7 @@
       ]
     },
     "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
-      "sha512": "HS3iRWZKcUw/8eZ/08GXKY2Bn7xNzQPzf8gRPHGSowX7u7XXu9i9YEaBeBNKUXWfI7qjvT2zXtLUvbN0hds8vg==",
+      "sha512": "6HXN1spFTGtzcCcpbSOhFWahjhZwPqf7uGSWauMKa6RpHp3LJH788g5IqW8rpUDL86vK17zXL3POzHKeW7CCuw==",
       "type": "package",
       "path": "microsoft.codeanalysis.analyzers/1.1.0",
       "files": [
@@ -7403,6 +7512,17 @@
         "lib/netstandard1.4/Microsoft.IdentityModel.Tokens.xml",
         "microsoft.identitymodel.tokens.5.1.4.nupkg.sha512",
         "microsoft.identitymodel.tokens.nuspec"
+      ]
+    },
+    "Microsoft.jQuery.Unobtrusive.Validation/3.2.3": {
+      "sha512": "zA9SHI3B0+JKcQDybm62TOK546TeqipYDGA1ytUUOVPHUbxOb80h5LxtMKuWph9NpsTqvsarV1ZPf/v9TB2sdA==",
+      "type": "package",
+      "path": "microsoft.jquery.unobtrusive.validation/3.2.3",
+      "files": [
+        "Content/Scripts/jquery.validate.unobtrusive.js",
+        "Content/Scripts/jquery.validate.unobtrusive.min.js",
+        "microsoft.jquery.unobtrusive.validation.3.2.3.nupkg.sha512",
+        "microsoft.jquery.unobtrusive.validation.nuspec"
       ]
     },
     "Microsoft.Net.Http.Headers/2.0.0": {
@@ -10535,7 +10655,7 @@
       ]
     },
     "System.Linq.Queryable/4.0.1": {
-      "sha512": "Yn/WfYe9RoRfmSLvUt2JerP0BTGGykCZkQPgojaxgzF2N0oPo+/AhB8TXOpdCcNlrG3VRtsamtK2uzsp3cqRVw==",
+      "sha512": "P5DK8AFj0GSShMyQRLwgwZ2fck2ICGIyYcavhKVyg1xj2qmCG4LM51dS1Qcl89Hbv8s9eS5FTHKnrOBeOHwq1A==",
       "type": "package",
       "path": "system.linq.queryable/4.0.1",
       "files": [
@@ -13474,8 +13594,12 @@
       "Microsoft.EntityFrameworkCore.Tools >= 2.0.0-rtm-*",
       "Microsoft.NETCore.App >= 2.0.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.0.0",
+      "Microsoft.jQuery.Unobtrusive.Validation >= 3.2.3",
       "Pomelo.EntityFrameworkCore.MySql >= 2.0.0-rtm-*",
-      "Swashbuckle.AspNetCore >= 1.0.0"
+      "Swashbuckle.AspNetCore >= 1.0.0",
+      "jQuery >= 3.2.1",
+      "jQuery.UI.Combined >= 1.12.1",
+      "jQuery.Validation >= 1.16.0"
     ]
   },
   "packageFolders": {
@@ -13526,6 +13650,10 @@
             "target": "Package",
             "version": "2.0.0-rtm-*"
           },
+          "jQuery": {
+            "target": "Package",
+            "version": "3.2.1"
+          },
           "Microsoft.EntityFrameworkCore.Tools": {
             "target": "Package",
             "version": "2.0.0-rtm-*"
@@ -13533,6 +13661,10 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "2.0.0"
+          },
+          "Microsoft.jQuery.Unobtrusive.Validation": {
+            "target": "Package",
+            "version": "3.2.3"
           },
           "Microsoft.NETCore.App": {
             "target": "Package",
@@ -13550,6 +13682,14 @@
           "Microsoft.AspNetCore.All": {
             "target": "Package",
             "version": "2.0.0"
+          },
+          "jQuery.Validation": {
+            "target": "Package",
+            "version": "1.16.0"
+          },
+          "jQuery.UI.Combined": {
+            "target": "Package",
+            "version": "1.12.1"
           }
         },
         "imports": [

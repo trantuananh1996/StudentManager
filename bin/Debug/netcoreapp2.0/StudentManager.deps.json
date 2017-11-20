@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "f071d67db9863a17e205c975cd9f409e47caf606"
+    "signature": "b7a2758aba595200f49bba595ec2cda2f946ab56"
   },
   "compilationOptions": {
     "defines": [
@@ -28,14 +28,29 @@
           "Microsoft.EntityFrameworkCore.Tools": "2.0.0",
           "Microsoft.NETCore.App": "2.0.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.0.0",
+          "Microsoft.jQuery.Unobtrusive.Validation": "3.2.3",
           "Pomelo.EntityFrameworkCore.MySql": "2.0.0",
-          "Swashbuckle.AspNetCore": "1.0.0"
+          "Swashbuckle.AspNetCore": "1.0.0",
+          "jQuery": "3.2.1",
+          "jQuery.UI.Combined": "1.12.1",
+          "jQuery.Validation": "1.16.0"
         },
         "runtime": {
           "StudentManager.dll": {}
         },
         "compile": {
           "StudentManager.dll": {}
+        }
+      },
+      "jQuery/3.2.1": {},
+      "jQuery.UI.Combined/1.12.1": {
+        "dependencies": {
+          "jQuery": "3.2.1"
+        }
+      },
+      "jQuery.Validation/1.16.0": {
+        "dependencies": {
+          "jQuery": "3.2.1"
         }
       },
       "Libuv/1.10.0": {
@@ -2272,6 +2287,12 @@
           "lib/netstandard1.4/Microsoft.IdentityModel.Tokens.dll": {}
         }
       },
+      "Microsoft.jQuery.Unobtrusive.Validation/3.2.3": {
+        "dependencies": {
+          "jQuery": "3.2.1",
+          "jQuery.Validation": "1.16.0"
+        }
+      },
       "Microsoft.Net.Http.Headers/2.0.0": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "2.0.0",
@@ -4396,6 +4417,27 @@
       "serviceable": false,
       "sha512": ""
     },
+    "jQuery/3.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Sc4jRcsItNXUoNmnPtD9DEnHCy5d4u0GOdDSKYL+b7PKtwajKO1YBJA55241G2M9KRCwSbtxV4ti3gb4n/pIew==",
+      "path": "jquery/3.2.1",
+      "hashPath": "jquery.3.2.1.nupkg.sha512"
+    },
+    "jQuery.UI.Combined/1.12.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5B0LrPZ0TLlwplPRu43h7fgMtDxMMEF31HajUqHSOJ7bC6nyJUJy7AkcuGaJdBrrZAZutnSBgXT01BGiIIC4TQ==",
+      "path": "jquery.ui.combined/1.12.1",
+      "hashPath": "jquery.ui.combined.1.12.1.nupkg.sha512"
+    },
+    "jQuery.Validation/1.16.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5vvz+cw3ykW15RmXoc6GzSKndb1Se38u4cJ3cqEvZxmInf/9NwvOxu2EUYdK2mCsdDsvGn2m9HA7s9NOrr8Wdw==",
+      "path": "jquery.validation/1.16.0",
+      "hashPath": "jquery.validation.1.16.0.nupkg.sha512"
+    },
     "Libuv/1.10.0": {
       "type": "package",
       "serviceable": true,
@@ -5022,7 +5064,7 @@
     "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-HS3iRWZKcUw/8eZ/08GXKY2Bn7xNzQPzf8gRPHGSowX7u7XXu9i9YEaBeBNKUXWfI7qjvT2zXtLUvbN0hds8vg==",
+      "sha512": "sha512-6HXN1spFTGtzcCcpbSOhFWahjhZwPqf7uGSWauMKa6RpHp3LJH788g5IqW8rpUDL86vK17zXL3POzHKeW7CCuw==",
       "path": "microsoft.codeanalysis.analyzers/1.1.0",
       "hashPath": "microsoft.codeanalysis.analyzers.1.1.0.nupkg.sha512"
     },
@@ -5494,6 +5536,13 @@
       "sha512": "sha512-SsJbZVPvjSlKFDAQmR2wpL6ZD/vCFlIsf0jxRlBJwyzKXZy3Wi/Xo+fE2MzAerLsJgG1UCdtplRwqDyq1euayw==",
       "path": "microsoft.identitymodel.tokens/5.1.4",
       "hashPath": "microsoft.identitymodel.tokens.5.1.4.nupkg.sha512"
+    },
+    "Microsoft.jQuery.Unobtrusive.Validation/3.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zA9SHI3B0+JKcQDybm62TOK546TeqipYDGA1ytUUOVPHUbxOb80h5LxtMKuWph9NpsTqvsarV1ZPf/v9TB2sdA==",
+      "path": "microsoft.jquery.unobtrusive.validation/3.2.3",
+      "hashPath": "microsoft.jquery.unobtrusive.validation.3.2.3.nupkg.sha512"
     },
     "Microsoft.Net.Http.Headers/2.0.0": {
       "type": "package",
@@ -6163,7 +6212,7 @@
     "System.Linq.Queryable/4.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Yn/WfYe9RoRfmSLvUt2JerP0BTGGykCZkQPgojaxgzF2N0oPo+/AhB8TXOpdCcNlrG3VRtsamtK2uzsp3cqRVw==",
+      "sha512": "sha512-P5DK8AFj0GSShMyQRLwgwZ2fck2ICGIyYcavhKVyg1xj2qmCG4LM51dS1Qcl89Hbv8s9eS5FTHKnrOBeOHwq1A==",
       "path": "system.linq.queryable/4.0.1",
       "hashPath": "system.linq.queryable.4.0.1.nupkg.sha512"
     },
