@@ -9,3 +9,14 @@ C:\Users\Tran Anh\Documents\GitHub\StudentManager\obj\Debug\netcoreapp2.0\Studen
 C:\Users\Tran Anh\Documents\GitHub\StudentManager\obj\Debug\netcoreapp2.0\StudentManager.AssemblyInfo.cs
 C:\Users\Tran Anh\Documents\GitHub\StudentManager\obj\Debug\netcoreapp2.0\StudentManager.dll
 C:\Users\Tran Anh\Documents\GitHub\StudentManager\obj\Debug\netcoreapp2.0\StudentManager.pdb
+E:\HK1-2017-2018\Cac Van De Hien Dai Cua CNTT\phan_chia\StudentManager\bin\Debug\netcoreapp2.0\StudentManager.deps.json
+E:\HK1-2017-2018\Cac Van De Hien Dai Cua CNTT\phan_chia\StudentManager\bin\Debug\netcoreapp2.0\StudentManager.runtimeconfig.json
+E:\HK1-2017-2018\Cac Van De Hien Dai Cua CNTT\phan_chia\StudentManager\bin\Debug\netcoreapp2.0\StudentManager.runtimeconfig.dev.json
+E:\HK1-2017-2018\Cac Van De Hien Dai Cua CNTT\phan_chia\StudentManager\bin\Debug\netcoreapp2.0\StudentManager.dll
+E:\HK1-2017-2018\Cac Van De Hien Dai Cua CNTT\phan_chia\StudentManager\bin\Debug\netcoreapp2.0\StudentManager.pdb
+E:\HK1-2017-2018\Cac Van De Hien Dai Cua CNTT\phan_chia\StudentManager\obj\Debug\netcoreapp2.0\StudentManager.csproj.CoreCompileInputs.cache
+E:\HK1-2017-2018\Cac Van De Hien Dai Cua CNTT\phan_chia\StudentManager\obj\Debug\netcoreapp2.0\StudentManager.AssemblyInfoInputs.cache
+E:\HK1-2017-2018\Cac Van De Hien Dai Cua CNTT\phan_chia\StudentManager\obj\Debug\netcoreapp2.0\StudentManager.AssemblyInfo.cs
+E:\HK1-2017-2018\Cac Van De Hien Dai Cua CNTT\phan_chia\StudentManager\obj\Debug\netcoreapp2.0\StudentManager.dll
+E:\HK1-2017-2018\Cac Van De Hien Dai Cua CNTT\phan_chia\StudentManager\obj\Debug\netcoreapp2.0\StudentManager.pdb
+E:\HK1-2017-2018\Cac Van De Hien Dai Cua CNTT\phan_chia\StudentManager\obj\Debug\netcoreapp2.0\StudentManager.csprojResolveAssemblyReference.cache
