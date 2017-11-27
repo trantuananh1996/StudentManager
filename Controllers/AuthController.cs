@@ -94,11 +94,11 @@ namespace exam.Controllers
             {
                 return Ok(new { status = ResultStatus.STATUS_FOBIDDEN, message = "Tài khoản bị khóa" });
             }
-            var token = genToken(user);
-            return Ok(new { status = ResultStatus.STATUS_OK, data = new { token = genToken(user), user = user } });
+            var token = GenToken(user);
+            return Ok(new { status = ResultStatus.STATUS_OK, data = new { token = GenToken(user), user = user } });
         }
 
-        private string genToken(User u)
+        private string GenToken(User u)
         {
 
             var key = new SymmetricSecurityKey(Encoding.Default.GetBytes(this.secrectKey));

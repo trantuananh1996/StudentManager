@@ -38,7 +38,7 @@ namespace exam.Repository
                 .Include("Subject")
                 .Include("Teacher").FirstOrDefaultAsync();
         }
-        public new async Task<List<Assignment>> getAll()
+        public new async Task<List<Assignment>> GetAll()
         {
             return await _context.Set<Assignment>().Include("SchoolYear")
                 .Include("Class")

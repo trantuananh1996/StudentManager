@@ -101,7 +101,10 @@ namespace exam
             services.AddScoped<ConductRepository, ConductRepository>();
             services.AddScoped<SemesterRepository, SemesterRepository>();
             services.AddScoped<AssignmentRepository, AssignmentRepository>();
-
+            services.AddScoped<SemesterResultRepository, SemesterResultRepository>();
+            services.AddScoped<SemesterResultBySubjectRepository, SemesterResultBySubjectRepository>();
+            services.AddScoped<YearResultRepository, YearResultRepository>();
+            services.AddScoped<YearResultBySubjectRepository, YearResultBySubjectRepository>();
 
 
             services.AddMvc();

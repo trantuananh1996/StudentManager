@@ -37,7 +37,7 @@ namespace exam.Controllers
         [HttpGet]
         public async Task<IActionResult> GetList()
         {
-            var nations = await AssignmentRepository.getAll();
+            var nations = await AssignmentRepository.GetAll();
             if (nations == null || !nations.Any()) return NotFound(new { message = "Không có phân công nào" });
             return Ok(new { status = ResultStatus.STATUS_OK, data = nations });
         }

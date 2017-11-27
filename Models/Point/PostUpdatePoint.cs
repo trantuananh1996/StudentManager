@@ -13,7 +13,6 @@ namespace StudentManager.Models.Point
         public int SemesterId { get; set; }
         public int SchoolYearId { get; set; }
         public int ClassId { get; set; }
-        public int PointTypeId { get; set; }
-        public float PointNumber { get; set; }
+        public List<ListPoint> ListPoints { get; set; }
     }
 }

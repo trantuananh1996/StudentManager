@@ -17,5 +17,10 @@ namespace exam.Repository
         {
             return await _context.Conducts.Where(c => c.Name.Equals(name)).FirstOrDefaultAsync();
         }
+
+        internal string XepLoaiLocLucHocKy(int studentId, int classId, int semesterId, int schoolYearId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

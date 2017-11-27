@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,12 +13,17 @@ namespace exam.Models
         public DateTime BirthDay { get; set; }
         public string PlaceOfBirth { get; set; }
         public virtual Nation Nation { get; set; }
-        public virtual Religion Religion { get; set; }
+        [ForeignKey("Religion")]
+        public int ReligionId { get; set; }
+        public Religion Religion { get; set; }
         public string FatherName { get; set; }
-       // public int FatherJobId { get; set; }
-       // public virtual Job FatherJob { get; set; }
+        [ForeignKey("FatherJob")]
+        public int FatherJobId { get; set; }
+        public  Job FatherJob { get; set; }
         public string MotherName { get; set; }
-       // public virtual Job MotherJob { get; set; }
+        [ForeignKey("Job")]
+        public int MotherJobId { get; set; }
+        public virtual Job MotherJob { get; set; }
 
         public string ReadableGender()
         {

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using StudentManager.Models.Point;
 using StudentManager.Models;
+using StudentManager.Models.Reports;
 
 namespace exam.Models
 {
@@ -31,9 +32,17 @@ namespace exam.Models
         public DbSet<Conduct> Conducts { get; set; }
         public DbSet<LearningCapacities> LearningCapacities { get; set; }
         public DbSet<Assignment> Assignments { get; set; }
+        public DbSet<SemesterResult> SemesterResults { get; set; }
+        public DbSet<SemesterResultBySubject> SemesterResultBySubjects { get; set; }
+        public DbSet<YearResult> YearResults { get; set; }
+        public DbSet<YearResultBySubject> YearResultSubjects { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
+            base.OnModelCreating(modelBuilder);
+
+            // Define composite key.
+            modelBuilder.Entity<SemesterResult>()
+                .HasKey(lc => new { lc.StudentId, lc.ClassId });
         }
     }
 }

@@ -25,7 +25,7 @@ namespace exam.Controllers
         [HttpGet("classes")]
         public async Task<IActionResult> List()
         {
-            var classes = await classRepository.getAll();
+            var classes = await classRepository.GetAll();
             return Ok(new { status = ResultStatus.STATUS_OK, data = classes });
         }
         [Microsoft.AspNetCore.Authorization.Authorize(Roles="SchoolBoard")]

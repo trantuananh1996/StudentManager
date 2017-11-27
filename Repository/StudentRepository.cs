@@ -15,8 +15,8 @@ namespace exam.Repository
         public async Task<List<Student>> FindStudentByName(string name)
         {
             var students = await _context.Students.Where(s => s.FullName.Contains(name))
-                .Include("Nation")
-                //.Include("Religion")
+                //.Include("Nation")
+               // .Include("Religion")
                 .ToListAsync();
 
             return students;

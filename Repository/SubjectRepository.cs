@@ -1,5 +1,7 @@
 ﻿using exam.Models;
 using exam.Repository;
+using Microsoft.EntityFrameworkCore;
+using StudentManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,20 @@ namespace StudentManager.Repository
     {
         public SubjectRepository(ApplicationDbContext context) : base(context)
         {
+        }
+
+        public async Task<List<Subject>> GetSubjectsAsync(int schoolYearId, int classId)
+        {
+            var ass = await _context.Assignments.Where(a =>
+             a.SchoolYear.Id.Equals(schoolYearId)
+             && a.Class.Id.Equals(classId)).ToListAsync();
+            List<Subject> sub = new List<Subject>();
+            foreach (Assignment a in ass)
+            {
+                sub.Add(await _context.Subjects.Where(s =>
+                s.Id.Equals(a.Subject.Id)).FirstOrDefaultAsync());
+            }
+            return sub;
         }
     }
 }

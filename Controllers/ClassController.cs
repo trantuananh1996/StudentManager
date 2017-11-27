@@ -33,7 +33,7 @@ namespace StudentManager.Controllers
         [HttpGet]
         public async Task<IActionResult> GetList()
         {
-            var list = await classRepository.getAll();
+            var list = await classRepository.GetAll();
             if (list == null || !list.Any()) return NotFound(new { message = "Không có lớp nào" });
             return Ok(new { status = ResultStatus.STATUS_OK, data = list });
         }

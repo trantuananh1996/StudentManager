@@ -2,10 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\Controllers",
-    "\\Repository",
+    "\\Models",
+    "\\Models\\Report",
+    "\\Repository\\Point",
     "\\swagger",
     "\\swagger\\v1"
   ],
-  "SelectedNode": "\\Controllers\\AuthController.cs",
+  "SelectedNode": "\\Models\\Report",
   "PreviewInSolutionExplorer": false
 }

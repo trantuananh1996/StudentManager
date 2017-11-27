@@ -24,7 +24,7 @@ namespace exam.Controllers
         {
             if(perpage == 0)
             {
-                var users = await _user.getAll();
+                var users = await _user.GetAll();
                 return Ok(users);
             } else {
                 var users = await _user.Paginate(perpage, page);

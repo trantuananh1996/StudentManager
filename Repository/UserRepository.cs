@@ -35,7 +35,7 @@ namespace exam.Repository
                                .Include("Role").ToListAsync();
             return users;
         }
-        public new async Task<List<User>> getAll()
+        public new async Task<List<User>> GetAll()
         {
             return await _context.Set<User>().Include("Role").ToListAsync();
         }

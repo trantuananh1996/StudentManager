@@ -13,7 +13,7 @@ namespace exam.Repository
         {
         }
 
-        public new async Task<List<Class>> getAll()
+        public new async Task<List<Class>> GetAll()
         {
             return await _context.Set<Class>().Include("Grade").Include("Teacher").Include("SchoolYear")
                 .ToListAsync();
