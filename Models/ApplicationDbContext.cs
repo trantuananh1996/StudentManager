@@ -42,7 +42,13 @@ namespace exam.Models
 
             // Define composite key.
             modelBuilder.Entity<SemesterResult>()
-                .HasKey(lc => new { lc.StudentId, lc.ClassId });
+                .HasKey(lc => new { lc.StudentId, lc.ClassId ,lc.SchoolYearId,lc.SemesterId});
+            modelBuilder.Entity<SemesterResultBySubject>()
+            .HasKey(lc => new { lc.StudentId, lc.ClassId, lc.SchoolYearId, lc.SemesterId });
+            modelBuilder.Entity<YearResult>()
+            .HasKey(lc => new { lc.StudentId, lc.ClassId, lc.SchoolYearId });
+            modelBuilder.Entity<YearResultBySubject>()
+            .HasKey(lc => new { lc.StudentId, lc.ClassId, lc.SchoolYearId });
         }
     }
 }

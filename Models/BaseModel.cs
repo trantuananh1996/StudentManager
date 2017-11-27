@@ -8,7 +8,6 @@ namespace exam.Models
 {
     public class BaseModel
     {
-        [Column(Order = 0)]
         public int Id { get; set; }
     }
 }

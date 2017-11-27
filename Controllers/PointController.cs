@@ -130,7 +130,7 @@ namespace StudentManager.Controllers
         YearResultBySubjectRepository yearResultBySubjectRepository;
         ConductRepository conductRepository;
 
-        public PointController(PointTypeRepository pointTypeRepository, PointRepository pointRepository, RuleRepository ruleRepository, StudentRepository studentRepository, SubjectRepository subjectRepository, SemesterRepository semesterRepository, SchoolYearRepository schoolYearRepository, ClassRepository classRepository, AssignmentRepository assignmentRepository, SemesterResultRepository semesterResultRepository, SemesterResultBySubjectRepository semesterResultBySubjectRepository, YearResultRepository yearResultRepository, YearResultBySubjectRepository yearResultBySubjectRepository)
+        public PointController(PointTypeRepository pointTypeRepository, PointRepository pointRepository, RuleRepository ruleRepository, StudentRepository studentRepository, SubjectRepository subjectRepository, SemesterRepository semesterRepository, SchoolYearRepository schoolYearRepository, ClassRepository classRepository, LearningCapacitiesRepository learningCapacitiesRepository, AssignmentRepository assignmentRepository, SemesterResultRepository semesterResultRepository, SemesterResultBySubjectRepository semesterResultBySubjectRepository, YearResultRepository yearResultRepository, YearResultBySubjectRepository yearResultBySubjectRepository, ConductRepository conductRepository)
         {
             this.pointTypeRepository = pointTypeRepository;
             this.pointRepository = pointRepository;
@@ -140,12 +140,15 @@ namespace StudentManager.Controllers
             this.semesterRepository = semesterRepository;
             this.schoolYearRepository = schoolYearRepository;
             this.classRepository = classRepository;
+            this.learningCapacitiesRepository = learningCapacitiesRepository;
             this.assignmentRepository = assignmentRepository;
             this.semesterResultRepository = semesterResultRepository;
             this.semesterResultBySubjectRepository = semesterResultBySubjectRepository;
             this.yearResultRepository = yearResultRepository;
             this.yearResultBySubjectRepository = yearResultBySubjectRepository;
+            this.conductRepository = conductRepository;
         }
+
 
 
 

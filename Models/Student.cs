@@ -13,10 +13,13 @@ namespace exam.Models
         public DateTime BirthDay { get; set; }
         public string PlaceOfBirth { get; set; }
         public virtual Nation Nation { get; set; }
+
         [ForeignKey("Religion")]
         public int ReligionId { get; set; }
         public Religion Religion { get; set; }
+
         public string FatherName { get; set; }
+
         [ForeignKey("FatherJob")]
         public int FatherJobId { get; set; }
         public  Job FatherJob { get; set; }

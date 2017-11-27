@@ -74,22 +74,22 @@ namespace StudentManager.Controllers
         }
 
         [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
-        [HttpPost("edit")]
+        [HttpPut]
         public async Task<IActionResult> Edit([FromBody] Teacher teacher)
         {
             var exist = await teacherRepository.Get(teacher.Id);
             if (exist == null) return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy giáo viên" });
 
             if (String.IsNullOrEmpty(teacher.Name))
-                return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Tên giáo viên không được để trống" });
+                return BadRequest(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Tên giáo viên không được để trống" });
             if (String.IsNullOrEmpty(teacher.Phone))
-                return Ok(new
+                return BadRequest(new
                 {
                     status = ResultStatus.STATUS_INVALID_INPUT,
                     message = "Số điện thoại giáo viên không được để trống"
                 });
             if (String.IsNullOrEmpty(teacher.Address))
-                return Ok(new
+                return BadRequest(new
                 {
                     status = ResultStatus.STATUS_INVALID_INPUT,
                     message = "Địa chỉ giáo viên không được để trống"

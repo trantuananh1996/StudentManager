@@ -11,16 +11,19 @@ namespace StudentManager.Models.Reports
     public class YearResult
     {
         [ForeignKey("Student")]
+        [Key]
         public int StudentId { get; set; }
         public Student Student { get; set; }
 
         [ForeignKey("Class")]
+        [Key]
         public int ClassId { get; set; }
         public Class Class { get; set; }
 
    
 
         [ForeignKey("SchoolYear")]
+        [Key]
         public int SchoolYearId { get; set; }
         public SchoolYear SchoolYear { get; set; }
         public int LearningCapacityId { get; set; }
