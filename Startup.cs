@@ -24,7 +24,7 @@ namespace exam
     public class Startup
     {
         private string secrectKey = "needtogetthisfromenvironment";
-        private string connectStr = "Server=localhost;database=quanlihocsinh;uid=root;pwd=root;Convert Zero Datetime=True";
+        private string connectStr = "Server=localhost;database=quanlihocsinh;uid=root;pwd=abc123;Convert Zero Datetime=True";
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()

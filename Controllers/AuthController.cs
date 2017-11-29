@@ -122,7 +122,6 @@ namespace exam.Controllers
         }
         [Authorize]
         [HttpGet]
-        [Route("info")]
         public async Task<ActionResult> UserInfo()
         {
             var userid = User.Claims.FirstOrDefault(c => c.Type == "userid").Value;
