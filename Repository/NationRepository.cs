@@ -13,9 +13,9 @@ namespace exam.Repository
         {
         }
 
-        public async Task<Conduct> FindByName(string name)
+        public async Task<Nation> FindByName(string name)
         {
-            return await _context.Conducts.Where(c => c.Name.Equals(name)).FirstOrDefaultAsync();
+            return await _context.Nations.Where(c => c.Name.Equals(name)).FirstOrDefaultAsync();
         }
     }
 }
