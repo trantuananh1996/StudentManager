@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace exam.Models
 {
-    public class LearningCapacities : BaseModel
+    public class LearningCapacity : BaseModel
     {
         public string Name { get; set; }
         public float MinPoint { get; set; }

@@ -45,7 +45,7 @@ namespace exam.Controllers
 
         [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
         [HttpPost]
-        public async Task<IActionResult> CreateItem([FromBody] LearningCapacities fromBody)
+        public async Task<IActionResult> CreateItem([FromBody] LearningCapacity fromBody)
         {
             if (String.IsNullOrEmpty(fromBody.Name))
                 return BadRequest(new
@@ -89,7 +89,7 @@ namespace exam.Controllers
 
         [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem(int id, [FromBody] LearningCapacities fromBody)
+        public async Task<IActionResult> PutItem(int id, [FromBody] LearningCapacity fromBody)
         {
             var exist = await LearningCapacitiesRepository.Get(id);
             if (exist == null) return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy học lực" });

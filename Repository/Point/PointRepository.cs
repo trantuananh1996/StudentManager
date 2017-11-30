@@ -18,11 +18,11 @@ namespace StudentManager.Repository.Point
         public async Task<List<Models.Point.Point>> GetStudentPoint(PostUpdatePoint given)
         {
             return await _context.Points.Where(p =>
-            p.SchoolYear.Id.Equals(given.SchoolYearId)
-            && p.Semester.Id.Equals(given.SemesterId)
-            && p.Class.Id.Equals(given.ClassId)
-            && p.Subject.Id.Equals(given.SubjectId)
-            && p.Student.Id.Equals(given.StudentId)
+            p.SchoolYear.Id==given.SchoolYearId
+            && p.Semester.Id==given.SemesterId
+            && p.Class.Id==given.ClassId
+            && p.Subject.Id==given.SubjectId
+            && p.Student.Id==given.StudentId
             ).Include("SchoolYear")
             .Include("Semester")
             .Include("Class")
@@ -33,11 +33,11 @@ namespace StudentManager.Repository.Point
         public async Task<List<Models.Point.Point>> GetStudentPoint(int maHocSinh, int maMonHoc, int maHocKy, int maNamHoc, int maLop)
         {
             return await _context.Points.Where(p =>
-            p.SchoolYear.Id.Equals(maNamHoc)
-            && p.Semester.Id.Equals(maHocKy)
-            && p.Class.Id.Equals(maLop)
-            && p.Subject.Id.Equals(maMonHoc)
-            && p.Student.Id.Equals(maHocSinh)
+            p.SchoolYear.Id==maNamHoc
+            && p.Semester.Id==maHocKy
+            && p.Class.Id==maLop
+            && p.Subject.Id==maMonHoc
+            && p.Student.Id==maHocSinh
             ).Include("SchoolYear")
             .Include("Semester")
             .Include("Class")

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StudentManager.Models.Reports
 {
-    public class YearResultBySubject
+    public class YearResultBySubject : BaseModel
     {
         [ForeignKey("Student")]
         [Key]

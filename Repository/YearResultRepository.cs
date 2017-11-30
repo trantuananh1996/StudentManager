@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace StudentManager.Repository
 {
-    public class YearResultRepository : RepositoryNoId<YearResult>
+    public class YearResultRepository : Repository<YearResult>
     {
         public YearResultRepository(ApplicationDbContext context) : base(context)
         {
@@ -18,7 +18,7 @@ namespace StudentManager.Repository
 
 
 
-        public async void Save(PointController pointController, int studentId, int classId, int schoolYearId)
+        public async Task Save(PointController pointController, int studentId, int classId, int schoolYearId)
         {
             float diemTBChungCacMonCN = (float)Math.Round(await pointController.DiemTrungBinhChungCacMonCaNam(studentId, classId, schoolYearId), 2);
             int hocLuc = await pointController.XepLoaiLocLucCaNamAsync(studentId, classId, schoolYearId);
@@ -27,7 +27,21 @@ namespace StudentManager.Repository
              s.StudentId.Equals(studentId)
              && s.ClassId.Equals(classId)
              && s.SchoolYearId.Equals(schoolYearId)
-           ).FirstOrDefaultAsync();
+           ).FirstOrDefaultAsync(); if (exist == null)
+            {
+                exist = new YearResult
+                {
+                    StudentId = studentId,
+                    ClassId = classId,
+                    SchoolYearId = schoolYearId,
+                    AverageScore = diemTBChungCacMonCN,
+                    LearningCapacityId = hocLuc,
+                    ResultId = 1
+                };
+
+                await Create(exist);
+                return;
+            }
             exist.AverageScore = diemTBChungCacMonCN;
             exist.LearningCapacityId = hocLuc;
             exist.ResultId = 1;

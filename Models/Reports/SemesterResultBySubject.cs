@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace StudentManager.Models.Reports
 {
-    public class SemesterResultBySubject
+    public class SemesterResultBySubject:BaseModel
 
     {
         [ForeignKey("Student")]

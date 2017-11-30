@@ -16,11 +16,15 @@ namespace StudentManager.Controllers
     {
         TeacherRepository teacherRepository;
         SubjectRepository subjectRepository;
+        UserRepository userRepository;
+        RoleRepository roleRepository;
 
-        public TeacherController(TeacherRepository teacherRepository, SubjectRepository subjectRepository)
+        public TeacherController(TeacherRepository teacherRepository, SubjectRepository subjectRepository, UserRepository userRepository, RoleRepository roleRepository)
         {
             this.teacherRepository = teacherRepository;
             this.subjectRepository = subjectRepository;
+            this.userRepository = userRepository;
+            this.roleRepository = roleRepository;
         }
 
         [Microsoft.AspNetCore.Authorization.Authorize]
@@ -64,7 +68,22 @@ namespace StudentManager.Controllers
                     status = ResultStatus.STATUS_INVALID_INPUT,
                     message = "Địa chỉ giáo viên không được để trống"
                 });
-
+            var tmp2 = await userRepository.FindByUsername(teacher.Phone);
+            if (tmp2 != null)
+            {
+                return Ok(new { status = ResultStatus.STATUS_DUPLICATE, message = "Số điện thoại đã có người đăng kí" });
+            }
+            Role role = await roleRepository.Get(3);
+            var user = new User
+            {
+                name = teacher.Name,
+                username = teacher.Phone,
+                email = teacher.Email,
+                password = "123456",
+                IsLocked = 0,
+                Role = role
+            };
+            await userRepository.Create(user);
             await teacherRepository.Create(teacher);
             return Ok(new
             {

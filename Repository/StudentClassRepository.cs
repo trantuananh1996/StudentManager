@@ -14,6 +14,17 @@ namespace exam.Repository
         {
 
         }
+
+        public async Task<List<Class>> GetAssignedClassAsync()
+        {
+            var cls = _context.StudentClasses.GroupBy(c => c.ClassId).ToList();
+            List<Class> classes = new List<Class>();
+            foreach (var stC in cls)
+            {
+                classes.Add(await _context.Classes.Where(c => c.Id.Equals(stC.Key)).Include("Grade").Include("Teacher").Include("SchoolYear").Include("Teacher.Subject").FirstOrDefaultAsync());
+            }
+            return classes;
+        }
         public new async Task Create(StudentClass st)
         {
             StudentClass exist = await _context.StudentClasses.Where(s => s.ClassId == st.ClassId && s.StudentId == st.StudentId).FirstOrDefaultAsync();

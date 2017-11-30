@@ -2,6 +2,7 @@
 using exam.Repository;
 using exam.Utils;
 using Microsoft.AspNetCore.Mvc;
+using StudentManager.Models;
 using StudentManager.Models.Point;
 using StudentManager.Models.Post;
 using StudentManager.Repository;
@@ -20,13 +21,15 @@ namespace StudentManager.Controllers
         GradeRepository GradeRepository;
         SchoolYearRepository SchoolYearRepository;
         TeacherRepository TeacherRepository;
+        RuleRepository ruleRepo;
 
-        public ClassController(ClassRepository classRepository, GradeRepository gradeRepository, SchoolYearRepository schoolYearRepository, TeacherRepository teacherRepository)
+        public ClassController(ClassRepository classRepository, GradeRepository gradeRepository, SchoolYearRepository schoolYearRepository, TeacherRepository teacherRepository, RuleRepository ruleRepo)
         {
             this.classRepository = classRepository;
             GradeRepository = gradeRepository;
             SchoolYearRepository = schoolYearRepository;
             TeacherRepository = teacherRepository;
+            this.ruleRepo = ruleRepo;
         }
 
         [Microsoft.AspNetCore.Authorization.Authorize]
@@ -58,7 +61,23 @@ namespace StudentManager.Controllers
                     status = ResultStatus.STATUS_INVALID_INPUT,
                     message = "Tên lớp không được để trống"
                 });
-            Class cls = new Class {
+            if (fromBody.Size == default(int))
+                return BadRequest(new
+                {
+                    status = ResultStatus.STATUS_INVALID_INPUT,
+                    message = "Số lương học sinh trong lớp không được để trống"
+                });
+            Rule rule = await ruleRepo.GetDefaultRule();
+            if (rule != null)
+            {
+                if (fromBody.Size > rule.MaxSize) return BadRequest(new
+                {
+                    status = ResultStatus.STATUS_INVALID_INPUT,
+                    message = "Số lương học sinh tối đa trong lớp vượt quá quy định (" + rule.MaxSize + ") học sinh"
+                });
+            }
+            Class cls = new Class
+            {
                 Name = fromBody.Name,
                 Grade = await GradeRepository.Get(fromBody.GradeId),
                 SchoolYear = await SchoolYearRepository.Get(fromBody.SchoolYearId),
@@ -75,7 +94,7 @@ namespace StudentManager.Controllers
 
         [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem(int id,[FromBody] PostCreateClass fromBody)
+        public async Task<IActionResult> PutItem(int id, [FromBody] PostCreateClass fromBody)
         {
             var exist = await classRepository.Get(id);
             if (exist == null) return NotFound(new { status = ResultStatus.STATUS_NOT_FOUND, message = "Không tìm thấy lớp" });

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using exam.Utils;
+using StudentManager.Models.Auth;
 
 namespace exam.Controllers
 {
@@ -29,6 +30,7 @@ namespace exam.Controllers
             roleRepository = role;
         }
 
+        [Authorize(Roles="Admin")]
         [HttpGet]
         [Route("roles")]
         public async Task<IActionResult> Roles()
@@ -65,8 +67,7 @@ namespace exam.Controllers
             {
                 return Ok(new { status = ResultStatus.STATUS_FOBIDDEN, message = "Không thể tạo tài khoản mang quyền Admin" });
             }
-            var role = await roleRepository.FindRoleById(newU.Role);
-            if (role == null) return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Không tìm thấy quyền" });
+            Role role = await roleRepository.Get(5);
             var user = new User
             {
                 name = newU.Name,
@@ -79,6 +80,22 @@ namespace exam.Controllers
 
             await _iUserRepository.Create(user);
             return Ok(new { status = 1, data = user });
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpPost("assign")]
+        public async Task<IActionResult> AssignRole([FromBody] List<PostAssignRole> fromBody)
+        {
+            if (fromBody == null || !fromBody.Any()) return BadRequest(new { message="Thiếu dữ liệu gửi lên"});
+            foreach(PostAssignRole p in fromBody)
+            {
+                var user = await _iUserRepository.Get(p.UserId);
+                if (user!=null)
+                {
+                    user.Role = await roleRepository.Get(p.RoleId);
+                    await _iUserRepository.Update(p.UserId, user);
+                }
+            }
+            return Ok(new { status = ResultStatus.STATUS_OK, message = "Phân quyền người dùng thành công" });
         }
 
         [HttpPost]

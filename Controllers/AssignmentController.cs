@@ -37,9 +37,24 @@ namespace exam.Controllers
         [HttpGet]
         public async Task<IActionResult> GetList()
         {
-            var nations = await AssignmentRepository.GetAll();
-            if (nations == null || !nations.Any()) return NotFound(new { message = "Không có phân công nào" });
-            return Ok(new { status = ResultStatus.STATUS_OK, data = nations });
+            var assign = await AssignmentRepository.GetAll();
+            if (assign == null || !assign.Any()) return NotFound(new { message = "Không có phân công nào" });
+            List<dynamic> ls = new List<dynamic>();
+            foreach (Assignment ass in assign)
+            {
+                ls.Add(new
+                {
+                    id = ass.Id
+                ,                    schoolYear = (await SchoolYearRepository.Get(ass.SchoolYear.Id)).Name
+                ,
+                   classInfo = (await ClassRepository.Get(ass.Class.Id)).Name
+                ,
+                    subject = (await SubjectRepository.Get(ass.Subject.Id)).Name
+                ,
+                    teacher = (await TeacherRepository.Get(ass.Teacher.Id)).Name
+                });
+            }
+            return Ok(new { status = ResultStatus.STATUS_OK, data = ls });
         }
 
         [Microsoft.AspNetCore.Authorization.Authorize]
@@ -60,7 +75,7 @@ namespace exam.Controllers
                 return BadRequest(new
                 {
                     status = ResultStatus.STATUS_INVALID_INPUT,
-                    message="Thiếu mã năm học"
+                    message = "Thiếu mã năm học"
                 });
 
             if (fromBody.SchoolYearId == default(int))
@@ -84,7 +99,8 @@ namespace exam.Controllers
                     message = "Thiếu mã giáo viên học"
                 });
 
-            Assignment ass = new Assignment {
+            Assignment ass = new Assignment
+            {
                 SchoolYear = await SchoolYearRepository.Get(fromBody.SchoolYearId),
                 Class = await ClassRepository.Get(fromBody.ClassId),
                 Subject = await SubjectRepository.Get(fromBody.SubjectId),

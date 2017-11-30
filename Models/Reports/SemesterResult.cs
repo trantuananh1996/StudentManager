@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace StudentManager.Models.Reports
 {
-    public class SemesterResult
+    public class SemesterResult : BaseModel
     {
         [ForeignKey("Student")]
         [Key]
@@ -31,9 +31,10 @@ namespace StudentManager.Models.Reports
         [Key]
         public int SchoolYearId { get; set; }
         public SchoolYear SchoolYear { get; set; }
+        [ForeignKey("LearningCapacity")]
 
         public int LearningCapacityId { get; set; }
-        public LearningCapacities LearningCapacities { get; set; }
+        public LearningCapacity LearningCapacity { get; set; }
 
         public int ConductId { get; set; }
         public Conduct Conduct { get; set; }

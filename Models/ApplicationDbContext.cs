@@ -30,7 +30,7 @@ namespace exam.Models
         public DbSet<Religion> Religions { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Conduct> Conducts { get; set; }
-        public DbSet<LearningCapacities> LearningCapacities { get; set; }
+        public DbSet<LearningCapacity> LearningCapacities { get; set; }
         public DbSet<Assignment> Assignments { get; set; }
         public DbSet<SemesterResult> SemesterResults { get; set; }
         public DbSet<SemesterResultBySubject> SemesterResultBySubjects { get; set; }

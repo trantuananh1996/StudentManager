@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace exam.Repository
 {
-    public class LearningCapacitiesRepository : Repository<LearningCapacities>
+    public class LearningCapacitiesRepository : Repository<LearningCapacity>
     {
         public LearningCapacitiesRepository(ApplicationDbContext context) : base(context)
         {

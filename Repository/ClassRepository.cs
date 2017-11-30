@@ -15,12 +15,13 @@ namespace exam.Repository
 
         public new async Task<List<Class>> GetAll()
         {
-            return await _context.Set<Class>().Include("Grade").Include("Teacher").Include("SchoolYear")
+            return await _context.Set<Class>().Include("Grade").Include("Teacher").Include("SchoolYear").Include("Teacher.Subject")
                 .ToListAsync();
         }
         public new async Task<Class> Get(int id)
         {
             return await _context.Set<Class>().Where(c=>c.Id.Equals(id)).Include("Grade").Include("Teacher").Include("SchoolYear")
+                .Include("Teacher.Subject")
                 .FirstOrDefaultAsync();
         }
     }

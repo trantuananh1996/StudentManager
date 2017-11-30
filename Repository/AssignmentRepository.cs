@@ -19,13 +19,13 @@ namespace exam.Repository
         {
             List<Subject> subjects = new List<Subject>();
             var listAssign = await _context.Assignments
-                .Where(a => a.SchoolYear.Id.Equals(schoolyearid)
-                && a.Class.Id.Equals(classid)).ToListAsync();
+                .Where(a => a.SchoolYear.Id==schoolyearid
+                && a.Class.Id==classid).ToListAsync();
             if (listAssign != null && listAssign.Any())
             {
                 foreach(Assignment a in listAssign)
                 {
-                    subjects.Add(await _context.Subjects.Where(s=>s.Id.Equals(a.Subject.Id)).FirstOrDefaultAsync());
+                    subjects.Add(await _context.Subjects.Where(s=>s.Id==a.Subject.Id).FirstOrDefaultAsync());
                 }
             }
             return subjects;
@@ -33,7 +33,7 @@ namespace exam.Repository
         }
         public new async Task<Assignment> Get(int id)
         {
-            return await _context.Set<Assignment>().Where(a=>a.Id.Equals(id)).Include("SchoolYear")
+            return await _context.Set<Assignment>().Where(a=>a.Id==id).Include("SchoolYear")
                 .Include("Class")
                 .Include("Subject")
                 .Include("Teacher").FirstOrDefaultAsync();
@@ -43,7 +43,8 @@ namespace exam.Repository
             return await _context.Set<Assignment>().Include("SchoolYear")
                 .Include("Class")
                 .Include("Subject")
-                .Include("Teacher").ToListAsync();
+                .Include("Teacher")
+                .ToListAsync();
         }
     }
 }

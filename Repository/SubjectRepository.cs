@@ -18,13 +18,13 @@ namespace StudentManager.Repository
         public async Task<List<Subject>> GetSubjectsAsync(int schoolYearId, int classId)
         {
             var ass = await _context.Assignments.Where(a =>
-             a.SchoolYear.Id.Equals(schoolYearId)
-             && a.Class.Id.Equals(classId)).ToListAsync();
+             a.SchoolYear.Id==schoolYearId
+             && a.Class.Id==classId).ToListAsync();
             List<Subject> sub = new List<Subject>();
             foreach (Assignment a in ass)
             {
                 sub.Add(await _context.Subjects.Where(s =>
-                s.Id.Equals(a.Subject.Id)).FirstOrDefaultAsync());
+                s.Id==a.Subject.Id).FirstOrDefaultAsync());
             }
             return sub;
         }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace StudentManager.Repository
 {
-    public class SemesterResultRepository : RepositoryNoId<SemesterResult>
+    public class SemesterResultRepository : Repository<SemesterResult>
     {
         public SemesterResultRepository(ApplicationDbContext context) : base(context)
         {
@@ -18,7 +18,7 @@ namespace StudentManager.Repository
 
 
 
-        public async void Save(PointController pointController, ConductRepository conductRepository, int studentId, int classId, int semesterId, int schoolYearId)
+        public async Task Save(PointController pointController, ConductRepository conductRepository, int studentId, int classId, int semesterId, int schoolYearId)
         {
             float diemTBChungCacMonHK = (float)Math.Round(await pointController.DiemTrungBinhChungCacMonHocKy(studentId, classId, semesterId, schoolYearId), 2);
             int hocLuc =await pointController.XepLoaiLocLucHocKyAsync(studentId, classId, semesterId, schoolYearId);
@@ -28,7 +28,21 @@ namespace StudentManager.Repository
            && s.ClassId.Equals(classId)
            && s.SemesterId.Equals(semesterId)
            && s.SchoolYearId.Equals(schoolYearId)
-         ).FirstOrDefaultAsync();
+         ).FirstOrDefaultAsync(); if (exist == null)
+            {
+                exist = new SemesterResult
+                {
+                    StudentId = studentId,
+                    ClassId = classId,
+                    SemesterId = semesterId,
+                    SchoolYearId = schoolYearId,
+                    AverageSubjectScore = diemTBChungCacMonHK,
+                    LearningCapacityId = hocLuc
+                };
+
+                await Create(exist);
+                return;
+            }
             exist.AverageSubjectScore = diemTBChungCacMonHK;
             exist.LearningCapacityId = hocLuc;
 

@@ -17,5 +17,10 @@ namespace StudentManager.Repository
         {
             return _context.Teachers.Where(t => t.Id == id).Include("Subject").FirstOrDefaultAsync();
         }
+        public new async Task<List<Teacher>> GetAll()
+        {
+            return await _context.Teachers.Include("Subject").ToListAsync();
+
+        }
     }
 }

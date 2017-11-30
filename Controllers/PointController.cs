@@ -1,9 +1,11 @@
 ﻿using exam.Models;
 using exam.Repository;
 using exam.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentManager.Models;
 using StudentManager.Models.Point;
+using StudentManager.Models.Reports;
 using StudentManager.Repository;
 using StudentManager.Repository.Point;
 using System;
@@ -23,7 +25,15 @@ namespace StudentManager.Controllers
         StudentRepository studentRepository;
         SubjectRepository subjectRepository;
         SemesterRepository semesterRepository;
-
+        SchoolYearRepository schoolYearRepository;
+        ClassRepository classRepository;
+        LearningCapacitiesRepository learningCapacitiesRepository;
+        AssignmentRepository assignmentRepository;
+        SemesterResultRepository semesterResultRepository;
+        SemesterResultBySubjectRepository semesterResultBySubjectRepository;
+        YearResultRepository yearResultRepository;
+        YearResultBySubjectRepository yearResultBySubjectRepository;
+        ConductRepository conductRepository;
         public async Task<int> XepLoaiLocLucCaNamAsync(int studentId, int classId, int schoolYearId)
         {
             float tongDiem = 0;
@@ -52,16 +62,10 @@ namespace StudentManager.Controllers
             return await XepLoaiHocLucMonHocAsync(arrayDiemTBTungMon, tongDiem);
         }
 
-      
-
-        SchoolYearRepository schoolYearRepository;
-        ClassRepository classRepository;
-
-        LearningCapacitiesRepository learningCapacitiesRepository;
         public async Task<int> XepLoaiHocLucMonHocAsync(float[] arrayDiemTBTungMon, float tongDiem)
         {
             int xepLoai = -1;
-            float diemTBMonNhoNhat = arrayDiemTBTungMon[0];
+            float diemTBMonNhoNhat = arrayDiemTBTungMon.Count()==0?0:arrayDiemTBTungMon[0];
 
             for (int i = 0; i < arrayDiemTBTungMon.Length - 1; i++)
             {
@@ -74,7 +78,7 @@ namespace StudentManager.Controllers
             float[] diemCanDuoi = new float[lCapacities.Count];
 
             int count = 0;
-            foreach (LearningCapacities row in lCapacities)
+            foreach (LearningCapacity row in lCapacities)
             {
                 maHocLuc[count] = row.Id;
                 diemCanDuoi[count] = row.MinPoint;
@@ -108,7 +112,7 @@ namespace StudentManager.Controllers
             int soMonHoc = 0;
             foreach (Subject row in Subjects)
             {
-                diemTBTungMon =await  DiemTrungBinhMonHocKy(studentId,row.Id, semesterId, schoolYearId, classId);
+                diemTBTungMon = await DiemTrungBinhMonHocKy(studentId, row.Id, semesterId, schoolYearId, classId);
                 arrayDiemTBTungMon[soMonHoc++] = diemTBTungMon;
 
                 tongDiemCacMon += diemTBTungMon * row.Factor;
@@ -121,15 +125,6 @@ namespace StudentManager.Controllers
 
             return await XepLoaiHocLucMonHocAsync(arrayDiemTBTungMon, tongDiem);
         }
-
-        AssignmentRepository assignmentRepository;
-
-        SemesterResultRepository semesterResultRepository;
-        SemesterResultBySubjectRepository semesterResultBySubjectRepository;
-        YearResultRepository yearResultRepository;
-        YearResultBySubjectRepository yearResultBySubjectRepository;
-        ConductRepository conductRepository;
-
         public PointController(PointTypeRepository pointTypeRepository, PointRepository pointRepository, RuleRepository ruleRepository, StudentRepository studentRepository, SubjectRepository subjectRepository, SemesterRepository semesterRepository, SchoolYearRepository schoolYearRepository, ClassRepository classRepository, LearningCapacitiesRepository learningCapacitiesRepository, AssignmentRepository assignmentRepository, SemesterResultRepository semesterResultRepository, SemesterResultBySubjectRepository semesterResultBySubjectRepository, YearResultRepository yearResultRepository, YearResultBySubjectRepository yearResultBySubjectRepository, ConductRepository conductRepository)
         {
             this.pointTypeRepository = pointTypeRepository;
@@ -149,11 +144,8 @@ namespace StudentManager.Controllers
             this.conductRepository = conductRepository;
         }
 
-
-
-
-
         #region Danh sách loại điểm(Kiểm tra miệng, 15p, 1 tiết, học kì...)
+        [Authorize(Roles = "SchoolBoard")]
         [HttpGet("point-types")]
         public async Task<ActionResult> GetPointTypes()
         {
@@ -171,7 +163,6 @@ namespace StudentManager.Controllers
             if (point < 0 || point > maxPoint) return true;
             else return false;
         }
-
 
         [HttpPost("update-point")]
         public async Task CreateOrUpdate([FromBody] PostUpdatePoint givenPoint)
@@ -192,7 +183,7 @@ namespace StudentManager.Controllers
                         PointNumber = ls.Point
                     };
                     await pointRepository.Create(point);
-               
+
                     #endregion
                 }
                 else
@@ -212,7 +203,7 @@ namespace StudentManager.Controllers
                             PointNumber = ls.Point
                         };
                         await pointRepository.Create(point);
-                      
+
                     }
                     else
                     {
@@ -223,33 +214,33 @@ namespace StudentManager.Controllers
                         existPoint.Class = await classRepository.Get(givenPoint.ClassId);
                         existPoint.PointType = await pointTypeRepository.Get(ls.PointTypeId);
                         existPoint.PointNumber = ls.Point;
-                     
+
                     }
                     #endregion
                 }
             }
-            semesterResultBySubjectRepository.Save(this,givenPoint.StudentId,
+           await semesterResultBySubjectRepository.Save(this, givenPoint.StudentId,
                                                      givenPoint.ClassId,
                                                     givenPoint.SubjectId,
                                                    givenPoint.SemesterId,
                                                    givenPoint.SchoolYearId);
 
-            yearResultBySubjectRepository.Save(this,givenPoint.StudentId,
+            await yearResultBySubjectRepository.Save(this, givenPoint.StudentId,
                                                      givenPoint.ClassId,
                                                     givenPoint.SubjectId,
                                                    givenPoint.SchoolYearId);
 
-            semesterResultRepository.Save(this,conductRepository,givenPoint.StudentId,
+            await semesterResultRepository.Save(this, conductRepository, givenPoint.StudentId,
                                             givenPoint.ClassId,
                                           givenPoint.SemesterId,
                                           givenPoint.SchoolYearId);
 
-            yearResultRepository.Save(this,givenPoint.StudentId,
+            await yearResultRepository.Save(this, givenPoint.StudentId,
                                              givenPoint.ClassId,
                                            givenPoint.SchoolYearId);
 
         }
-        [HttpPost("update-point")]
+        [HttpPost("update")]
         public async Task<ActionResult> CreateOrUpdate([FromBody] List<PostUpdatePoint> points)
         {
             if (PointController.maxPoint == default(float))
@@ -257,12 +248,87 @@ namespace StudentManager.Controllers
                 Rule rule = await ruleRepository.GetDefaultRule();
                 maxPoint = rule.MaxPoint == default(float) ? 0 : rule.MaxPoint;
             }
-            foreach (PostUpdatePoint p in points)
+            foreach (PostUpdatePoint givenPoint in points)
             {
-                await CreateOrUpdate(p);
+                foreach (ListPoint ls in givenPoint.ListPoints)
+                {
+                    if (ls.Id == default(int))
+                    {
+                        #region Tạo mới điểm
+                        Point point = new Point
+                        {
+                            Student = await studentRepository.Get(givenPoint.StudentId),
+                            Subject = await subjectRepository.Get(givenPoint.SubjectId),
+                            Semester = await semesterRepository.Get(givenPoint.SemesterId),
+                            SchoolYear = await schoolYearRepository.Get(givenPoint.SchoolYearId),
+                            Class = await classRepository.Get(givenPoint.ClassId),
+                            PointType = await pointTypeRepository.Get(ls.PointTypeId),
+                            PointNumber = ls.Point
+                        };
+                        await pointRepository.Create(point);
+
+                        #endregion
+                    }
+                    else
+                    {
+                        #region Sửa điểm
+                        var existPoint = await pointRepository.Get(ls.Id);
+                        if (existPoint == null)
+                        {
+                            Point point = new Point
+                            {
+                                Student = await studentRepository.Get(givenPoint.StudentId),
+                                Subject = await subjectRepository.Get(givenPoint.SubjectId),
+                                Semester = await semesterRepository.Get(givenPoint.SemesterId),
+                                SchoolYear = await schoolYearRepository.Get(givenPoint.SchoolYearId),
+                                Class = await classRepository.Get(givenPoint.ClassId),
+                                PointType = await pointTypeRepository.Get(ls.PointTypeId),
+                                PointNumber = ls.Point
+                            };
+                            await pointRepository.Create(point);
+
+                        }
+                        else
+                        {
+                            existPoint.Student = await studentRepository.Get(givenPoint.StudentId);
+                            existPoint.Subject = await subjectRepository.Get(givenPoint.SubjectId);
+                            existPoint.Semester = await semesterRepository.Get(givenPoint.SemesterId);
+                            existPoint.SchoolYear = await schoolYearRepository.Get(givenPoint.SchoolYearId);
+                            existPoint.Class = await classRepository.Get(givenPoint.ClassId);
+                            existPoint.PointType = await pointTypeRepository.Get(ls.PointTypeId);
+                            existPoint.PointNumber = ls.Point;
+
+                        }
+                        #endregion
+                    }
+                }
+
+                await semesterResultBySubjectRepository.Save(this, givenPoint.StudentId,
+                                                      givenPoint.ClassId,
+                                                     givenPoint.SubjectId,
+                                                    givenPoint.SemesterId,
+                                                    givenPoint.SchoolYearId);
+
+                await yearResultBySubjectRepository.Save(this, givenPoint.StudentId,
+                                                    givenPoint.ClassId,
+                                                   givenPoint.SubjectId,
+                                                  givenPoint.SchoolYearId);
+
+                await semesterResultRepository.Save(this, conductRepository, givenPoint.StudentId,
+                                                givenPoint.ClassId,
+                                              givenPoint.SemesterId,
+                                              givenPoint.SchoolYearId);
+
+                await yearResultRepository.Save(this, givenPoint.StudentId,
+                                                 givenPoint.ClassId,
+                                               givenPoint.SchoolYearId);
+
+
+
+
             }
 
-         
+
 
             return Ok(new { status = ResultStatus.STATUS_OK, data = points });
         }

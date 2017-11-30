@@ -7,6 +7,9 @@ using exam.Repository;
 using exam.Utils;
 using exam.Models.Post;
 using StudentManager.Models.Post;
+using exam.Models;
+using StudentManager.Repository;
+using StudentManager.Models;
 
 namespace exam.Controllers
 {
@@ -15,31 +18,70 @@ namespace exam.Controllers
     {
         ClassRepository classRepository;
         StudentClassRepository studentClassRepository;
-        public StudentClassController(ClassRepository classRepository, StudentClassRepository stC)
+        StudentRepository studentRepository;
+        RuleRepository ruleRepo;
+
+        public StudentClassController(ClassRepository classRepository, StudentClassRepository studentClassRepository, StudentRepository studentRepository, RuleRepository ruleRepo)
         {
             this.classRepository = classRepository;
-            this.studentClassRepository = stC;
+            this.studentClassRepository = studentClassRepository;
+            this.studentRepository = studentRepository;
+            this.ruleRepo = ruleRepo;
         }
 
         [Microsoft.AspNetCore.Authorization.Authorize]
-        [HttpGet("classes")]
+        [HttpGet]
         public async Task<IActionResult> List()
         {
-            var classes = await classRepository.GetAll();
-            return Ok(new { status = ResultStatus.STATUS_OK, data = classes });
+            var classes = await studentClassRepository.GetAssignedClassAsync();
+            List<dynamic> ls = new List<dynamic>();
+            foreach (Class cls in classes)
+            {
+                var students = await studentRepository.FindStudentByClass(cls.Id);
+                ls.Add(new { classInfo = cls, students = students });
+            }
+
+            return Ok(new { status = ResultStatus.STATUS_OK, data = ls });
         }
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles="SchoolBoard")]
-        [HttpPost("createClass")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
+        [HttpPost]
         public async Task<IActionResult> CreateClass([FromBody] PostAddStudentClass post)
         {
             if (post.ClassId == default(int)) return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Thiếu classId" });
-            if (!post.StudentIds.Any()) return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Thiếu danh sách học sinh" });
-
-            foreach(int sId in post.StudentIds)
+            if (post.StudentIds == null || !post.StudentIds.Any()) return Ok(new { status = ResultStatus.STATUS_INVALID_INPUT, message = "Thiếu danh sách học sinh" });
+            var clazz = await classRepository.Get(post.ClassId);
+            var students = await studentRepository.FindStudentByClass(post.ClassId);
+            if (students != null && students.Count() == clazz.Size)
             {
-                await studentClassRepository.Create(new Models.StudentClass {StudentId=sId,ClassId=post.ClassId });
+                return BadRequest(new
+                {
+                    status = ResultStatus.STATUS_INVALID_INPUT,
+                    message = "Lớp đã đủ học sinh"
+                });
             }
-            return Ok(new {status=ResultStatus.STATUS_OK,data=new { classId=post.ClassId,students=post.StudentIds} });
+            else
+            {
+                int remain = clazz.Size - (students == null ? 0 : students.Count);
+                if (remain < post.StudentIds.Count) return BadRequest(new
+                {
+                    status = ResultStatus.STATUS_INVALID_INPUT,
+                    message = "Lớp chỉ còn chỗ cho " + remain + " học sinh"
+                });
+            }
+
+            foreach (int sId in post.StudentIds)
+            {
+                await studentClassRepository.Create(new Models.StudentClass { StudentId = sId, ClassId = post.ClassId });
+            }
+            return Ok(new
+            {
+                status = ResultStatus.STATUS_OK,
+                data = new
+                {
+                    classInfo = clazz,
+                    students = await studentRepository.FindStudentByClass(post.ClassId)
+                }
+            });
         }
 
         [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]

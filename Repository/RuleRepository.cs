@@ -18,6 +18,7 @@ namespace StudentManager.Repository
         public async Task<Models.Rule> GetDefaultRule()
         {
             var rule= await _context.Rules.FirstOrDefaultAsync();
+           
             return rule;
         }
     }

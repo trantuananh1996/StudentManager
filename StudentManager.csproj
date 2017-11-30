@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Models\Class\" />
     <Folder Include="wwwroot\" />
     <Folder Include="Middleware\" />
   </ItemGroup>
