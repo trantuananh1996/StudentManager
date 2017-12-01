@@ -297,7 +297,7 @@ namespace StudentManager.Controllers
                             existPoint.Class = await classRepository.Get(givenPoint.ClassId);
                             existPoint.PointType = await pointTypeRepository.Get(ls.PointTypeId);
                             existPoint.PointNumber = ls.Point;
-
+                            await pointRepository.Update(existPoint.Id, existPoint);
                         }
                         #endregion
                     }
@@ -337,13 +337,31 @@ namespace StudentManager.Controllers
          * Lấy danh sách điểm của học sinh
          * 
          * */
-        [HttpPost("showPoint")]
+        [HttpPost("showPoints")]
         public async Task<ActionResult> ShowStudentPoint([FromBody] PostUpdatePoint given)//Không dùng PointNumber
         {
             var list = await pointRepository.GetStudentPoint(given);
+    
             if (list == null || !list.Any())
+
                 return NotFound(new { message = "Học sinh chưa có điểm" });
-            return Ok(new { status = ResultStatus.STATUS_OK, data = list });
+            List<dynamic> ls = new List<dynamic>();
+            foreach(var v in list)
+            {
+                ls.Add(new { name=v.PointType.Name,point=v.PointNumber});
+            }
+            dynamic response = new { status = ResultStatus.STATUS_OK,
+                data = new
+                {
+                    student = list.First().Student.FullName,
+                    subject = list.First().Subject.Name,
+                    semester = list.First().Semester.Name,
+                    schoolYear = list.First().SchoolYear.Name,
+                    className = list.First().Class.Name,
+                    points = ls
+                }
+            };
+            return Ok(response);
         }
 
         #region Tính các loại điểm

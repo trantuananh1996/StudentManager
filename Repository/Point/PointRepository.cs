@@ -28,6 +28,7 @@ namespace StudentManager.Repository.Point
             .Include("Class")
             .Include("Student")
             .Include("Subject")
+            .Include("PointType")
             .ToListAsync();
         }
         public async Task<List<Models.Point.Point>> GetStudentPoint(int maHocSinh, int maMonHoc, int maHocKy, int maNamHoc, int maLop)
@@ -43,6 +44,7 @@ namespace StudentManager.Repository.Point
             .Include("Class")
             .Include("Student")
             .Include("Subject")
+            .Include("PointType")
             .ToListAsync();
         }
     }

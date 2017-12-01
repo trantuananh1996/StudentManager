@@ -53,7 +53,7 @@ namespace StudentManager.Controllers
 
         [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SchoolBoard")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] PostCreateClass fromBody)
+        public async  Task<IActionResult> Create([FromBody] PostCreateClass fromBody)
         {
             if (String.IsNullOrEmpty(fromBody.Name))
                 return BadRequest(new
@@ -74,6 +74,11 @@ namespace StudentManager.Controllers
                 {
                     status = ResultStatus.STATUS_INVALID_INPUT,
                     message = "Số lương học sinh tối đa trong lớp vượt quá quy định (" + rule.MaxSize + ") học sinh"
+                });
+                if (fromBody.Size <rule.MinSize) return BadRequest(new
+                {
+                    status = ResultStatus.STATUS_INVALID_INPUT,
+                    message = "Số lương học sinh tối thiểu trong lớp thấp quá quy định (" + rule.MinSize + ") học sinh"
                 });
             }
             Class cls = new Class

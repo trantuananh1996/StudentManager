@@ -27,7 +27,6 @@ namespace StudentManager.Controllers.Report
             if (result == null || !result.Any()) return NotFound(new { message = "Không có kết quả nào" });
             return Ok(new { status = ResultStatus.STATUS_OK, data = result });
         }
-        [Microsoft.AspNetCore.Authorization.Authorize]
 
     
     }
